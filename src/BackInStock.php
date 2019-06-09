@@ -47,10 +47,6 @@ class BackInStock extends Plugin
     // Public Properties
     // =========================================================================
 
-    /**
-     * @var string
-     */
-    public $schemaVersion = '0.1.1';
 
     // Public Methods
     // =========================================================================

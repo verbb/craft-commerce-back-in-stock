@@ -130,7 +130,7 @@ class BaseController extends Controller
         $model->options = $options;
 
         if (!BackInStock::$plugin->backInStockService->createBackInStockRecord($model)) {
-            $error = Craft::t('craft-commerce-back-in-stock', 'We couldn\'t save your request');
+            $error = Craft::t('craft-commerce-back-in-stock', 'Your email is already subscribed to receive updates for this product');
 
             if ($request->getAcceptsJson()) {
                 return $this->asJson([

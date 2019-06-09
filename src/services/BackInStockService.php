@@ -43,7 +43,7 @@ class BackInStockService extends Component
             }
         } else {
             // no variants - just check the product (which is still a variant...)
-            $variantsToCheck[] = $v->id;
+            $variantsToCheck[] = $variant->productId;
         }
 
         // find any variants that had 0 stock but now have more
