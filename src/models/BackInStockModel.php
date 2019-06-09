@@ -14,6 +14,7 @@ use mediabeastnz\backinstock\BackInStock;
 
 use Craft;
 use craft\base\Model;
+use craft\helpers\Json;
 
 /**
  * @author    Myles Derham
@@ -33,6 +34,8 @@ class BackInStockModel extends Model
 
     public $variantId;
 
+    public $options;
+
     public $isNotified;
 
     public $uid;
@@ -44,6 +47,18 @@ class BackInStockModel extends Model
 
     // Public Methods
     // =========================================================================
+
+    /**
+     * @inheritdoc
+     */
+    public function init()
+    {
+        parent::init();
+
+        if (is_string($this->options)) {
+            $this->options = Json::decode($this->options);
+        }
+    }
 
     /**
      * @inheritdoc

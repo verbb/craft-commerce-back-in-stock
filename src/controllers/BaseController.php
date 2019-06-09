@@ -51,6 +51,7 @@ class BaseController extends Controller
         
         $email = $request->getParam('email');
         $variantId = $request->getParam('variantId');
+        $options = $request->getParam('options', []);
 
         if ($variantId == '' || !is_numeric($variantId)) {
             $error = Craft::t('craft-commerce-back-in-stock', 'Sorry you couldn\'t be added to the notifications list');
@@ -126,6 +127,7 @@ class BaseController extends Controller
         $model = new BackInStockModel();
         $model->variantId = $variantId;
         $model->email = $email;
+        $model->options = $options;
 
         if (!BackInStock::$plugin->backInStockService->createBackInStockRecord($model)) {
             $error = Craft::t('craft-commerce-back-in-stock', 'We couldn\'t save your request');

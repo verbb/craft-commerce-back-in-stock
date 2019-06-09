@@ -60,7 +60,7 @@ class SendEmailNotification extends BaseJob
             $record->save();
         }
 
-        BackInStock::$plugin->backInStockService->sendMail($variant, $subject, $recipient, $template);
+        BackInStock::$plugin->backInStockService->sendMail($variant, $subject, $record, $recipient, $template);
         
     }
 

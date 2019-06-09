@@ -17,6 +17,7 @@ use mediabeastnz\backinstock\jobs\SendEmailNotification;
 
 use Craft;
 use craft\base\Component;
+use craft\helpers\Json;
 use craft\mail\Message;
 use craft\commerce\elements\Variant;
 
@@ -94,6 +95,7 @@ class BackInStockService extends Component
             $record = BackInStockRecord::findOne(array(
                 'variantId' => $model->variantId, 
                 'email' => $model->email,
+                'options' => $model->options,
                 'isNotified' => 0
             ));
 
@@ -102,6 +104,7 @@ class BackInStockService extends Component
                 $newRecord = new BackInStockRecord();
                 $newRecord->variantId = $model->variantId;
                 $newRecord->email = $model->email;
+                $newRecord->options = $model->options;
                 $newRecord->save();
 
                 return true;
@@ -119,7 +122,7 @@ class BackInStockService extends Component
      * @param AbandonedCart $cart
      * @return bool $result
      */
-    public function sendMail($variantId, $subject, $recipient = null, $templatePath = null): bool
+    public function sendMail($variantId, $subject, $record = null, $recipient = null, $templatePath = null): bool
     {        
         // settings/defaults
         $view = Craft::$app->getView();
@@ -146,8 +149,13 @@ class BackInStockService extends Component
         // template variables
         $renderVariables = [
             'subject' => $subject,
-            'variant' => $variant
+            'variant' => $variant,
         ];
+
+        // Add the record options, if available
+        if ($record && is_string($record->options)) {
+            $renderVariables['options'] = Json::decode($record->options);
+        }
 
         $templatePath = $view->renderString($templatePath, $renderVariables);
 
