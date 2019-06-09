@@ -53,13 +53,37 @@ class BaseController extends Controller
         $variantId = $request->getParam('variantId');
 
         if ($variantId == '' || !is_numeric($variantId)) {
-            $session->setError(Craft::t('craft-commerce-back-in-stock', 'Sorry you couldn\'t be added to the notifications list'));
-            return false;
+            $error = Craft::t('craft-commerce-back-in-stock', 'Sorry you couldn\'t be added to the notifications list');
+
+            if ($request->getAcceptsJson()) {
+                return $this->asJson([
+                    'success' => false,
+                    'error' => $error,
+                ]);
+            }
+
+            Craft::$app->getUrlManager()->setRouteParams([
+                'error' => $error,
+            ]);
+
+            return null;
         }
 
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            $session->setError(Craft::t('craft-commerce-back-in-stock', 'Please Enter a Valid Email Address'));
-            return false;
+            $error = Craft::t('craft-commerce-back-in-stock', 'Please Enter a Valid Email Address');
+
+            if ($request->getAcceptsJson()) {
+                return $this->asJson([
+                    'success' => false,
+                    'error' => $error,
+                ]);
+            }
+
+            Craft::$app->getUrlManager()->setRouteParams([
+                'error' => $error,
+            ]);
+
+            return null;
         }
 
         //check is product exists and is actually out of stock
@@ -72,10 +96,30 @@ class BaseController extends Controller
         $model->variantId = $variantId;
         $model->email = $email;
 
-        if (BackInStock::$plugin->backInStockService->createBackInStockRecord($model)) {
-            $session->setNotice(Craft::t('craft-commerce-back-in-stock', $email . ' will be notified when ' . $variant->title . ' is available'));
-        } else {
-            $session->setError(Craft::t('craft-commerce-back-in-stock', 'We couldn\'t save your request'));
+        if (!BackInStock::$plugin->backInStockService->createBackInStockRecord($model)) {
+            $error = Craft::t('craft-commerce-back-in-stock', 'We couldn\'t save your request');
+
+            if ($request->getAcceptsJson()) {
+                return $this->asJson([
+                    'success' => false,
+                    'error' => $error,
+                ]);
+            }
+
+            Craft::$app->getUrlManager()->setRouteParams([
+                'error' => $error,
+            ]);
+
+            return null;
         }
+
+        if ($request->getAcceptsJson()) {
+            return $this->asJson([
+                'success' => true,
+                'message' => Craft::t('craft-commerce-back-in-stock', $email . ' will be notified when ' . $variant->title . ' is available'),
+            ]);
+        }
+
+        return $this->redirectToPostedUrl();
     }
 }
