@@ -4,7 +4,8 @@
 ### Added
 - Ability to store additional options e.g. product attributes etc (Thanks Josh Crawford)
 - Responses are now ajax friendly
-- Added response message for when email is already detected 
+- Added response message for when email is already detected
+ 
 ### Fixed
 - Validation issues when no email was entered and other various responses
 - Creating a new product would cause an error as no variant was found, this is now fixed 
