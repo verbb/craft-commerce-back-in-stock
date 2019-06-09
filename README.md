@@ -37,6 +37,16 @@ The `variantId` fields value might need to be dynamic if your site allows the us
 
 If you only have one variant then use the example provided above.
 
+You can also include an `options` value to save additional information with the form submission. This should be in the form of a JSON object. This input is entirely optional.
+
+```twig
+{% set options = { title: 'Some Title', productAttribute: 'Some Value' } %}
+
+<input type="hidden" name="options" value="{{ options | json_encode }}">
+```
+
+You can use these variables in your email template, or subject line via `options.title` (as per the above example). Make sure you check to see if values exist when doing so!
+
 Check out the [helper template](./resources/templates/form-example.twig) (built using Tailwind) if you need some to get you started.
 
 ![Screenshot of form example](resources/img/form-example.png)

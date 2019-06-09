@@ -51,31 +51,108 @@ class BaseController extends Controller
         
         $email = $request->getParam('email');
         $variantId = $request->getParam('variantId');
+        $options = $request->getParam('options', []);
 
         if ($variantId == '' || !is_numeric($variantId)) {
-            $session->setError(Craft::t('Sorry you couldn\'t be added to the notifications list'));
-            return false;
+            $error = Craft::t('craft-commerce-back-in-stock', 'Sorry you couldn\'t be added to the notifications list');
+
+            if ($request->getAcceptsJson()) {
+                return $this->asJson([
+                    'success' => false,
+                    'error' => $error,
+                ]);
+            }
+
+            Craft::$app->getUrlManager()->setRouteParams([
+                'error' => $error,
+            ]);
+
+            return null;
         }
 
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            $session->setError(Craft::t('Please Enter a Valid Email Address'));
-            return false;
+            $error = Craft::t('craft-commerce-back-in-stock', 'Please Enter a Valid Email Address');
+
+            if ($request->getAcceptsJson()) {
+                return $this->asJson([
+                    'success' => false,
+                    'error' => $error,
+                ]);
+            }
+
+            Craft::$app->getUrlManager()->setRouteParams([
+                'error' => $error,
+            ]);
+
+            return null;
         }
 
         //check is product exists and is actually out of stock
         $variant = Variant::findOne($variantId);
-        if (!$variant || $variant->hasStock()) {
-            return false;
+
+        if (!$variant) {
+            $error = Craft::t('craft-commerce-back-in-stock', 'Unable to find variant');
+
+            if ($request->getAcceptsJson()) {
+                return $this->asJson([
+                    'success' => false,
+                    'error' => $error,
+                ]);
+            }
+
+            Craft::$app->getUrlManager()->setRouteParams([
+                'error' => $error,
+            ]);
+
+            return null;
+        }
+
+        if ($variant->hasStock()) {
+            $error = Craft::t('craft-commerce-back-in-stock', 'Variant is in stock!');
+
+            if ($request->getAcceptsJson()) {
+                return $this->asJson([
+                    'success' => false,
+                    'error' => $error,
+                ]);
+            }
+
+            Craft::$app->getUrlManager()->setRouteParams([
+                'error' => $error,
+            ]);
+
+            return null;
         }
 
         $model = new BackInStockModel();
         $model->variantId = $variantId;
         $model->email = $email;
+        $model->options = $options;
 
-        if (BackInStock::$plugin->backInStockService->createBackInStockRecord($model)) {
-            $session->setNotice(Craft::t('craft-commerce-back-in-stock', $email . ' will be notified when ' . $variant->title . ' is available'));
-        } else {
-            $session->setError(Craft::t('craft-commerce-back-in-stock', 'We couldn\'t save your request'));
+        if (!BackInStock::$plugin->backInStockService->createBackInStockRecord($model)) {
+            $error = Craft::t('craft-commerce-back-in-stock', 'We couldn\'t save your request');
+
+            if ($request->getAcceptsJson()) {
+                return $this->asJson([
+                    'success' => false,
+                    'error' => $error,
+                ]);
+            }
+
+            Craft::$app->getUrlManager()->setRouteParams([
+                'error' => $error,
+            ]);
+
+            return null;
         }
+
+        if ($request->getAcceptsJson()) {
+            return $this->asJson([
+                'success' => true,
+                'message' => Craft::t('craft-commerce-back-in-stock', $email . ' will be notified when ' . $variant->title . ' is available'),
+            ]);
+        }
+
+        return $this->redirectToPostedUrl();
     }
 }

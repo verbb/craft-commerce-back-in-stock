@@ -70,6 +70,7 @@ class Install extends Migration
                     'uid' => $this->uid(),
                     'email' => $this->string(255)->notNull()->defaultValue(''),
                     'variantId' => $this->integer()->notNull(),
+                    'options' => $this->text(),
                     'isNotified' => $this->boolean()->defaultValue(false),
                 ]
             );
