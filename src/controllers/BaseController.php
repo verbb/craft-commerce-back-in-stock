@@ -53,12 +53,12 @@ class BaseController extends Controller
         $variantId = $request->getParam('variantId');
 
         if ($variantId == '' || !is_numeric($variantId)) {
-            $session->setError(Craft::t('Sorry you couldn\'t be added to the notifications list'));
+            $session->setError(Craft::t('craft-commerce-back-in-stock', 'Sorry you couldn\'t be added to the notifications list'));
             return false;
         }
 
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            $session->setError(Craft::t('Please Enter a Valid Email Address'));
+            $session->setError(Craft::t('craft-commerce-back-in-stock', 'Please Enter a Valid Email Address'));
             return false;
         }
 
