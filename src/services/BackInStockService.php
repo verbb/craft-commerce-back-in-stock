@@ -175,7 +175,7 @@ class BackInStockService extends Component
         
         // build the email
         $newEmail = new Message();
-        $newEmail->setFrom([$settings['fromEmail'] => $settings['fromName']]);
+        $newEmail->setFrom([Craft::parseEnv($settings['fromEmail']) => Craft::parseEnv($settings['fromName'])]);
         $newEmail->setTo($recipient);
         $newEmail->setSubject($view->renderString($subject, $renderVariables));
         $newEmail->setHtmlBody($view->renderTemplate($templatePath, $renderVariables));

@@ -1,5 +1,9 @@
 # Release Notes for Back In Stock
 
+## 1.1.1 - 2019-12-03
+### Changed
+- Craft email settings e.g. FromEmail and FromName are now parsed so environment values can be used
+
 ## 1.1.0 - 2019-06-09
 ### Added
 - Ability to store additional options e.g. product attributes etc (Thanks Josh Crawford)
