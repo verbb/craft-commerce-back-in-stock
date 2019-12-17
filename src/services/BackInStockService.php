@@ -31,35 +31,14 @@ class BackInStockService extends Component
     // Public Methods
     // =========================================================================
 
-    public function findVariantsInStock($variant)
+    public function isBackInStock($variant)
     {
-        // product type has variants to check
-        $variantsToCheck = array();
-        if (isset($variant->product->defaultVariantId)) {
-            foreach ($variant->product->variants as $v) {
-                if ($v->stock > 0 || $v->hasUnlimitedStock) {
-                    $variantsToCheck[] = $v->id;
-                }
-            }
-        } else {
-            // no variants - just check the product (which is still a variant...)
-            $variantsToCheck[] = $variant->productId;
-        }
-
-        // find any variants that had 0 stock but now have more
-        if (!empty($variantsToCheck)) {
-            $variantsNowInStock = array();
-            foreach ($variantsToCheck as $variantToCheck) {
-                $originalObject = Variant::findOne($variantToCheck);
-                if ($originalObject) {
-                    if ($originalObject->stock == 0 || $originalObject->hasUnlimitedStock) {
-                        $variantsNowInStock[] = $originalObject->id;
-                    }
-                }
-            }
-
-            if (!empty($variantsNowInStock)) {
-                $this->findInterestedEmails($variantsNowInStock);
+        // check that before save variant had 0 stock and was not unlimited
+        $originalObject = Variant::findOne($variant->id);
+        if ($originalObject) {
+            if ($originalObject->stock == 0 && !$originalObject->hasUnlimitedStock) {
+                $this->findInterestedEmails($variant->id);
+                return true;
             }
         }
 
@@ -67,10 +46,10 @@ class BackInStockService extends Component
     }
 
 
-    public function findInterestedEmails($variantsNowInStock)
+    public function findInterestedEmails($variantNowInStock)
     {
         $records = BackInStockRecord::find()->where([
-            'variantId' => $variantsNowInStock,
+            'variantId' => $variantNowInStock,
             'isNotified' => 0
         ])->all();
 
@@ -90,10 +69,10 @@ class BackInStockService extends Component
     public function createBackInStockRecord(BackInStockModel $model)
     {
         if ($model->variantId && $model->email) {
-            
+
             // prevent duplicate notification requests
             $record = BackInStockRecord::findOne(array(
-                'variantId' => $model->variantId, 
+                'variantId' => $model->variantId,
                 'email' => $model->email,
                 'options' => $model->options,
                 'isNotified' => 0
@@ -123,13 +102,13 @@ class BackInStockService extends Component
      * @return bool $result
      */
     public function sendMail($variantId, $subject, $record = null, $recipient = null, $templatePath = null): bool
-    {        
+    {
         // settings/defaults
         $view = Craft::$app->getView();
         $oldTemplateMode = $view->getTemplateMode();
         $originalLanguage = Craft::$app->language;
 
-        if (strpos($templatePath, "craft-commerce-back-in-stock/emails") !== false) { 
+        if (strpos($templatePath, "craft-commerce-back-in-stock/emails") !== false) {
             $view->setTemplateMode($view::TEMPLATE_MODE_CP);
         } else {
             $view->setTemplateMode($view::TEMPLATE_MODE_SITE);
@@ -172,7 +151,7 @@ class BackInStockService extends Component
 
         // Get from address from site settings
         $settings = Craft::$app->systemSettings->getSettings('email');
-        
+
         // build the email
         $newEmail = new Message();
         $newEmail->setFrom([Craft::parseEnv($settings['fromEmail']) => Craft::parseEnv($settings['fromName'])]);
