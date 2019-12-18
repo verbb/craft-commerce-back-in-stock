@@ -74,12 +74,12 @@ class BackInStockService extends Component
             $record = BackInStockRecord::findOne(array(
                 'variantId' => $model->variantId,
                 'email' => $model->email,
-                'options' => $model->options,
+                'options' => json_encode($model->options),
                 'isNotified' => 0
             ));
 
             if (!$record) {
-                // record deosn't exist so create it
+                // record doesn't exist so create it
                 $newRecord = new BackInStockRecord();
                 $newRecord->variantId = $model->variantId;
                 $newRecord->email = $model->email;
