@@ -57,9 +57,7 @@ class BackInStockService extends Component
             // add all emails to send to the queue
             foreach ($records as $record) {
                 Craft::$app->queue->push(new SendEmailNotification([
-                    'backInStockRecordId' => $record->id,
-                    'variantId' => $record->variantId,
-                    'email' => $record->email
+                    'backInStockRecordId' => $record->id
                 ]));
             }
         }
@@ -95,13 +93,7 @@ class BackInStockService extends Component
     }
 
 
-    /**
-     * Send the abandoned cart reminder email.
-     *
-     * @param AbandonedCart $cart
-     * @return bool $result
-     */
-    public function sendMail($variantId, $subject, $record = null, $recipient = null, $templatePath = null): bool
+    public function sendMail($record, $subject, $templatePath = null): bool
     {
         // settings/defaults
         $view = Craft::$app->getView();
@@ -115,7 +107,7 @@ class BackInStockService extends Component
         }
 
         // get the order from the cart
-        $variant = Variant::findOne($variantId);
+        $variant = Variant::findOne($record->variantId);
 
         if (!$variant) {
             $error = Craft::t('craft-commerce-back-in-stock', 'Could not find Variant for Back In Stock Notification email.');
@@ -155,7 +147,7 @@ class BackInStockService extends Component
         // build the email
         $newEmail = new Message();
         $newEmail->setFrom([Craft::parseEnv($settings['fromEmail']) => Craft::parseEnv($settings['fromName'])]);
-        $newEmail->setTo($recipient);
+        $newEmail->setTo($record->email);
         $newEmail->setSubject($view->renderString($subject, $renderVariables));
         $newEmail->setHtmlBody($view->renderTemplate($templatePath, $renderVariables));
 
