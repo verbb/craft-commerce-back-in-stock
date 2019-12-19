@@ -29,3 +29,11 @@
     placeholder: 'Order today, {{variant.title}} is now in stock',
     errors: settings.getErrors('emailSubject')
 }) }}
+
+{{ forms.lightswitchField({
+    first: false,
+    label: "Automatically Purge Notification Requests",
+    instructions: 'Purge notification requests from the database when a notification is successfully sent.',
+    name: 'purgeRequests',
+    on: settings.purgeRequests
+}) }}

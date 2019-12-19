@@ -34,6 +34,11 @@ class Settings extends Model
      */
     public $emailSubject = 'Order today, {{variant.title}} is now in stock';
 
+    /**
+     * @var bool
+     */
+    public $purgeRequests = false;
+
     // Public Methods
     // =========================================================================
 
@@ -44,6 +49,7 @@ class Settings extends Model
     {
         return [
             [['emailTemplate', 'emailSubject'], 'string'],
+            ['purgeRequests', 'boolean'],
             [['emailTemplate', 'emailSubject'], 'required']
         ];
     }

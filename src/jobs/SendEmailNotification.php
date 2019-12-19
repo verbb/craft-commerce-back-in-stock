@@ -29,16 +29,6 @@ class SendEmailNotification extends BaseJob
      * @var int
      */
     public $backInStockRecordId;
-    
-    /**
-     * @var int
-     */
-    public $variantId;
-
-    /**
-     * @var string
-     */
-    public $email;
 
     // Public Methods
     // =========================================================================
@@ -51,17 +41,18 @@ class SendEmailNotification extends BaseJob
 
         $template = BackInStock::$plugin->getSettings()->emailTemplate;
         $subject = BackInStock::$plugin->getSettings()->emailSubject;
-        $recipient = $this->email;
-        $variant = $this->variantId;
 
         $record = BackInStockRecord::findOne($this->backInStockRecordId);
         if ($record) {
-            $record->isNotified = 1;
-            $record->save();
+            if (BackInStock::$plugin->backInStockService->sendMail($record, $subject, $template)) {
+                if (BackInStock::$plugin->getSettings()->purgeRequests) {
+                    $record->delete();
+                } else {
+                    $record->isNotified = 1;
+                    $record->save();
+                }
+            }
         }
-
-        BackInStock::$plugin->backInStockService->sendMail($variant, $subject, $record, $recipient, $template);
-        
     }
 
     // Protected Methods
