@@ -1,5 +1,9 @@
 # Release Notes for Back In Stock
 
+## 1.3.0 - 2019-12-20
+### Added
+- You can now automatically purge user details after emails are sent. Useful if GDPR or similar is a requirement.
+
 ## 1.2.0 - 2019-12-19
 ### Fixed
 - Email notifications are only fired once. An issue could of occured previously if the product had multiple variants and the user selected anything but the first variant. Thanks @jmauzyk.
