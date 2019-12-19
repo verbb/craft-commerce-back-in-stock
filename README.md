@@ -49,4 +49,7 @@ You can use these variables in your email template, or subject line via `options
 
 Check out the [helper template](./resources/templates/form-example.twig) (built using Tailwind) if you need some to get you started.
 
+### Automatically Purge Notification Requests
+If privacy is a requirement you'll want to enable "Automatically Purge Notification Requests". This will delete the users information once they have been notified rather than being kept in the database.
+
 ![Screenshot of form example](resources/img/form-example.png)
