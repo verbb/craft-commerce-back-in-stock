@@ -29,7 +29,7 @@ The form will need 3 fields. 2 hidden fields and 1 visible field where the user 
 
 ```twig
 <input type="hidden" name="action" value="craft-commerce-back-in-stock/base/register-interest">
-<input type="text" name="variantId" value="{{product.defaultVariant.id}}">
+<input type="hidden" name="variantId" value="{{ product.defaultVariant.id }}">
 <input type="text" name="email" value="{{ currentUser.email }}">
 ```
 
@@ -50,4 +50,3 @@ You can use these variables in your email template, or subject line via `options
 Check out the [helper template](./resources/templates/form-example.twig) (built using Tailwind) if you need some to get you started.
 
 ![Screenshot of form example](resources/img/form-example.png)
-

@@ -18,6 +18,7 @@ use mediabeastnz\backinstock\models\Settings;
 use Craft;
 use craft\base\Plugin;
 use craft\services\Plugins;
+use craft\events\ModelEvent;
 use craft\events\PluginEvent;
 use craft\web\UrlManager;
 use craft\events\RegisterUrlRulesEvent;
@@ -80,10 +81,10 @@ class BackInStock extends Plugin
             __METHOD__
         );
 
-        Event::on(Elements::class, Elements::EVENT_BEFORE_SAVE_ELEMENT, function(Event $event) {
-
-            if ($event->element instanceof Variant) {
-                $this->backInStockService->findVariantsInStock($event->element);
+        Event::on(Variant::class, Variant::EVENT_BEFORE_SAVE, function(ModelEvent $event) {
+            $variant = $event->sender;
+            if ($variant->stock > 0 || $variant->hasUnlimitedStock) {
+                $this->backInStockService->isBackInStock($variant);
             }
         });
 

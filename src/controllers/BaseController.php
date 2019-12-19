@@ -43,12 +43,12 @@ class BaseController extends Controller
      */
     public function actionRegisterInterest()
     {
-        
+
         $this->requirePostRequest();
 
         $session = Craft::$app->getSession();
         $request = Craft::$app->getRequest();
-        
+
         $email = $request->getParam('email');
         $variantId = $request->getParam('variantId');
         $options = $request->getParam('options', []);
@@ -63,15 +63,13 @@ class BaseController extends Controller
                 ]);
             }
 
-            Craft::$app->getUrlManager()->setRouteParams([
-                'error' => $error,
-            ]);
+            Craft::$app->getSession()->setError($error);
 
             return null;
         }
 
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            $error = Craft::t('craft-commerce-back-in-stock', 'Please Enter a Valid Email Address');
+            $error = Craft::t('craft-commerce-back-in-stock', 'Please enter a valid email address');
 
             if ($request->getAcceptsJson()) {
                 return $this->asJson([
@@ -80,9 +78,7 @@ class BaseController extends Controller
                 ]);
             }
 
-            Craft::$app->getUrlManager()->setRouteParams([
-                'error' => $error,
-            ]);
+            Craft::$app->getSession()->setError($error);
 
             return null;
         }
@@ -100,9 +96,7 @@ class BaseController extends Controller
                 ]);
             }
 
-            Craft::$app->getUrlManager()->setRouteParams([
-                'error' => $error,
-            ]);
+            Craft::$app->getSession()->setError($error);
 
             return null;
         }
@@ -117,9 +111,7 @@ class BaseController extends Controller
                 ]);
             }
 
-            Craft::$app->getUrlManager()->setRouteParams([
-                'error' => $error,
-            ]);
+            Craft::$app->getSession()->setError($error);
 
             return null;
         }
@@ -139,9 +131,7 @@ class BaseController extends Controller
                 ]);
             }
 
-            Craft::$app->getUrlManager()->setRouteParams([
-                'error' => $error,
-            ]);
+            Craft::$app->getSession()->setError($error);
 
             return null;
         }
