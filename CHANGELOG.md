@@ -1,8 +1,8 @@
 # Release Notes for Back In Stock
 
-## 1.1.1 - 2019-12-03
-### Changed
-- Craft email settings e.g. FromEmail and FromName are now parsed so environment values can be used
+## 1.2.0 - 2019-12-19
+### Fixed
+- Email notifications are only fired once. An issue could of occured previously if the product had multiple variants and the user selected anything but the first variant. Thanks @jmauzyk.
 
 ## 1.1.0 - 2019-06-09
 ### Added
