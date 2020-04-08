@@ -139,7 +139,7 @@ class BaseController extends Controller
         if ($request->getAcceptsJson()) {
             return $this->asJson([
                 'success' => true,
-                'message' => Craft::t('craft-commerce-back-in-stock', $email . ' will be notified when ' . $variant->title . ' is available'),
+                'message' => Craft::t('craft-commerce-back-in-stock', '{email} will be notified when {title} is available', ['email' => $email, 'title' => $variant->title]),
             ]);
         }
 

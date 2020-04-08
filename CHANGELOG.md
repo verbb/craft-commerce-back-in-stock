@@ -1,5 +1,9 @@
 # Release Notes for Back In Stock
 
+## 1.3.1 - 2020-04-08
+### Fixed
+- Response from form can now be translated (Thanks @pieter-janDB)
+
 ## 1.3.0 - 2019-12-20
 ### Added
 - You can now automatically purge user details after emails are sent. Useful if GDPR or similar is a requirement.
