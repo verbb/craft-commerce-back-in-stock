@@ -4,8 +4,8 @@
  *
  * Back in stock Craft Commerce 2 plugin
  *
- * @link      https://www.mylesderham.dev/
- * @copyright Copyright (c) 2019 Myles Derham
+ * @link      https://www.mylesthe.dev/
+ * @copyright Copyright (c) 2019 Myles Beardsmore
  */
 
 namespace mediabeastnz\backinstock\models;
@@ -16,7 +16,7 @@ use Craft;
 use craft\base\Model;
 
 /**
- * @author    Myles Derham
+ * @author    Myles Beardsmore
  * @package   BackInStock
  */
 class Settings extends Model
@@ -24,6 +24,21 @@ class Settings extends Model
     // Public Properties
     // =========================================================================
 
+    /**
+     * @var bool
+     */
+    public $sendConfirmation = false;
+
+    /**
+     * @var string
+     */
+    public $confirmationEmailTemplate = 'craft-commerce-back-in-stock/emails/confirmation';
+
+    /**
+     * @var string
+     */
+    public $confirmationEmailSubject = 'Back in stock notification confirmation for {{variant.title}}';
+    
     /**
      * @var string
      */
@@ -48,8 +63,8 @@ class Settings extends Model
     public function rules()
     {
         return [
-            [['emailTemplate', 'emailSubject'], 'string'],
-            ['purgeRequests', 'boolean'],
+            [['emailTemplate', 'emailSubject', 'confirmationEmailTemplate', 'confirmationEmailSubject'], 'string'],
+            [['purgeRequests', 'sendConfirmation'], 'boolean'],
             [['emailTemplate', 'emailSubject'], 'required']
         ];
     }

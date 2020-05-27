@@ -4,21 +4,46 @@
  *
  * Back In Stock Settings.twig
  *
- * @author    Myles Derham
- * @copyright Copyright (c) 2019 Myles Derham
- * @link      https://www.mylesderham.dev/
+ * @author    Myles Beardsmore
+ * @copyright Copyright (c) 2019 Myles Beardsmore
+ * @link      https://www.mylesthe.dev/
  * @package   BackInStock
  */
 #}
 
 {% import "_includes/forms" as forms %}
 
+{{ forms.lightswitchField({
+    first: false,
+    label: "Send email confirmation to customer",
+    instructions: 'A confirmation email will be sent to the customer is they request to be notified',
+    name: 'sendConfirmation',
+    on: settings.sendConfirmation
+}) }}
+
+{{ forms.textField({
+    label: "Confirmation Email Template",
+    name: 'confirmationEmailTemplate',
+    value: settings.confirmationEmailTemplate,
+    placeholder: 'craft-commerce-back-in-stock/emails/confirmation',
+    instructions: 'Use a custom template for the confirmation email.',
+    errors: settings.getErrors('confirmationEmailTemplate')
+}) }}
+
+{{ forms.textField({
+    label: "Confirmation Email Subject",
+    name: 'confirmationEmailSubject',
+    value: settings.confirmationEmailSubject,
+    placeholder: 'Back in stock notification confirmation for {{variant.title}}',
+    errors: settings.getErrors('confirmationEmailSubject')
+}) }}
+
 {{ forms.textField({
     label: "Email Template",
     name: 'emailTemplate',
     value: settings.emailTemplate,
     placeholder: 'craft-commerce-back-in-stock/emails/notification',
-    instructions: 'Use a custom template for the notification email.',
+    instructions: 'Use a custom template for the notification email, this gets sent when an item is back in stock',
     errors: settings.getErrors('emailTemplate')
 }) }}
 

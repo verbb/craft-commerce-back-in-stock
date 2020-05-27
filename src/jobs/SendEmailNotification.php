@@ -4,8 +4,8 @@
  *
  * Back in stock Craft Commerce 2 plugin
  *
- * @link      https://www.mylesderham.dev/
- * @copyright Copyright (c) 2019 Myles Derham
+ * @link      https://www.mylesthe.dev/
+ * @copyright Copyright (c) 2019 Myles Beardsmore
  */
 
 namespace mediabeastnz\backinstock\jobs;
@@ -17,7 +17,7 @@ use Craft;
 use craft\queue\BaseJob;
 
 /**
- * @author    Myles Derham
+ * @author    Myles Beardsmore
  * @package   BackInStock
  */
 class SendEmailNotification extends BaseJob
@@ -30,6 +30,21 @@ class SendEmailNotification extends BaseJob
      */
     public $backInStockRecordId;
 
+    /**
+     * @var boolean
+     */
+    public $confirmation;
+
+    /**
+     * @var string
+     */
+    public $subject;
+
+    /**
+     * @var string
+     */
+    public $template;
+
     // Public Methods
     // =========================================================================
 
@@ -38,20 +53,20 @@ class SendEmailNotification extends BaseJob
      */
     public function execute($queue)
     {
-
-        $template = BackInStock::$plugin->getSettings()->emailTemplate;
-        $subject = BackInStock::$plugin->getSettings()->emailSubject;
-
         $record = BackInStockRecord::findOne($this->backInStockRecordId);
         if ($record) {
-            if (BackInStock::$plugin->backInStockService->sendMail($record, $subject, $template)) {
-                if (BackInStock::$plugin->getSettings()->purgeRequests) {
-                    $record->delete();
-                } else {
-                    $record->isNotified = 1;
-                    $record->save();
+            if (BackInStock::$plugin->backInStockService->sendMail($record, $this->subject, $this->template)) {
+                if (!$this->confirmation) {
+                    if (BackInStock::$plugin->getSettings()->purgeRequests) {
+                        $record->delete();
+                    } else {
+                        $record->isNotified = 1;
+                        $record->save();
+                    }
                 }
             }
+        } else {
+            Craft::error("Couldn't find record for back in stock email. ID#" . $this->backInStockRecordId);
         }
     }
 
@@ -63,6 +78,6 @@ class SendEmailNotification extends BaseJob
      */
     protected function defaultDescription(): string
     {
-        return Craft::t('craft-commerce-back-in-stock', 'Send email notifications of stock increase');
+        return Craft::t('craft-commerce-back-in-stock', 'Sending email for back in stock plugin');
     }
 }

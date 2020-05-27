@@ -4,8 +4,8 @@
  *
  * Back in stock Craft Commerce 2 plugin
  *
- * @link      https://www.mylesderham.dev/
- * @copyright Copyright (c) 2019 Myles Derham
+ * @link      https://www.mylesthe.dev/
+ * @copyright Copyright (c) 2019 Myles Beardsmore
  */
 
 namespace mediabeastnz\backinstock\migrations;
@@ -17,7 +17,7 @@ use craft\config\DbConfig;
 use craft\db\Migration;
 
 /**
- * @author    Myles Derham
+ * @author    Myles Beardsmore
  * @package   BackInStock
  */
 class Install extends Migration

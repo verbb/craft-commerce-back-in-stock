@@ -4,8 +4,8 @@
  *
  * Back in stock Craft Commerce 2 plugin
  *
- * @link      https://www.mylesderham.dev/
- * @copyright Copyright (c) 2019 Myles Derham
+ * @link      https://www.mylesthe.dev/
+ * @copyright Copyright (c) 2019 Myles Beardsmore
  */
 
 namespace mediabeastnz\backinstock\controllers;
@@ -19,7 +19,7 @@ use craft\web\Controller;
 use craft\commerce\elements\Variant;
 
 /**
- * @author    Myles Derham
+ * @author    Myles Beardsmore
  * @package   BackInStock
  */
 class BaseController extends Controller

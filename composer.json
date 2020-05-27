@@ -1,8 +1,8 @@
 {
     "name": "mediabeastnz/craft-commerce-back-in-stock",
-    "description": "Back in stock plugin for Craft Commerce 2 that notifies subscribed users via an automated email",
+    "description": "Back in stock plugin for Craft Commerce that notifies subscribed users via an automated email",
     "type": "craft-plugin",
-    "version": "1.3.1",
+    "version": "1.4.0",
     "keywords": [
         "craft",
         "cms",
@@ -16,8 +16,8 @@
     "license": "proprietary",
     "authors": [
         {
-            "name": "Myles Derham",
-            "homepage": "https://www.mylesderham.dev/"
+            "name": "Myles Beardsmore",
+            "homepage": "https://www.mylesthe.dev/"
         }
     ],
     "require": {

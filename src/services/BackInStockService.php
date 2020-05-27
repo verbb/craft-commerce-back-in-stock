@@ -4,8 +4,8 @@
  *
  * Back in stock Craft Commerce 2 plugin
  *
- * @link      https://www.mylesderham.dev/
- * @copyright Copyright (c) 2019 Myles Derham
+ * @link      https://www.mylesthe.dev/
+ * @copyright Copyright (c) 2019 Myles Beardsmore
  */
 
 namespace mediabeastnz\backinstock\services;
@@ -23,7 +23,7 @@ use craft\commerce\elements\Variant;
 
 
 /**
- * @author    Myles Derham
+ * @author    Myles Beardsmore
  * @package   BackInStock
  */
 class BackInStockService extends Component
@@ -54,10 +54,17 @@ class BackInStockService extends Component
         ])->all();
 
         if ($records) {
+
+            $template = BackInStock::$plugin->getSettings()->emailTemplate;
+            $subject = BackInStock::$plugin->getSettings()->emailSubject;
+
             // add all emails to send to the queue
             foreach ($records as $record) {
                 Craft::$app->queue->push(new SendEmailNotification([
-                    'backInStockRecordId' => $record->id
+                    'confirmation' => false,
+                    'backInStockRecordId' => $record->id,
+                    'subject' => $subject,
+                    'template' => $template
                 ]));
             }
         }
@@ -72,7 +79,7 @@ class BackInStockService extends Component
             $record = BackInStockRecord::findOne(array(
                 'variantId' => $model->variantId,
                 'email' => $model->email,
-                'options' => json_encode($model->options),
+                'options' => $model->options,
                 'isNotified' => 0
             ));
 
@@ -83,6 +90,20 @@ class BackInStockService extends Component
                 $newRecord->email = $model->email;
                 $newRecord->options = $model->options;
                 $newRecord->save();
+
+                // check settings to see if confirmation is required
+                $template = BackInStock::$plugin->getSettings()->confirmationEmailTemplate;
+                $subject = BackInStock::$plugin->getSettings()->confirmationEmailSubject;
+                $sendConfirmation = BackInStock::$plugin->getSettings()->sendConfirmation;
+
+                if ($sendConfirmation) {
+                    Craft::$app->queue->push(new SendEmailNotification([
+                        'confirmation' => true,
+                        'backInStockRecordId' => $newRecord->id,
+                        'subject' => $subject,
+                        'template' => $template
+                    ]));
+                }
 
                 return true;
             }

@@ -1,5 +1,14 @@
 # Release Notes for Back In Stock
 
+## 1.4.0 - 2020-05-27
+### Added
+- Confirmation emails can be sent to the customer now (Feature Request #6).
+- Confirmation emails can use a custom template, subject line and is optional (off by default).
+
+### Fixed
+- Fixed an issue where duplicate records could be added resulting in multiple emails being sent.
+- Tested on Craft 3.4 and Commerce 3.1.
+
 ## 1.3.1 - 2020-04-08
 ### Fixed
 - Response from form can now be translated (Thanks @pieter-janDB)
