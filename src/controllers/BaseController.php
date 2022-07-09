@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Back In Stock plugin for Craft CMS 3.x
  *
@@ -52,6 +53,7 @@ class BaseController extends Controller
         $email = $request->getParam('email');
         $variantId = $request->getParam('variantId');
         $options = $request->getParam('options', []);
+        $locale = Craft::$app->language;
 
         if ($variantId == '' || !is_numeric($variantId)) {
             $error = Craft::t('craft-commerce-back-in-stock', 'Sorry you couldn\'t be added to the notifications list');
@@ -120,6 +122,7 @@ class BaseController extends Controller
         $model->variantId = $variantId;
         $model->email = $email;
         $model->options = $options;
+        $model->locale = $locale;
 
         if (!BackInStock::$plugin->backInStockService->createBackInStockRecord($model)) {
             $error = Craft::t('craft-commerce-back-in-stock', 'Your email is already subscribed to receive updates for this product');

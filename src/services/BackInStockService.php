@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Back In Stock plugin for Craft CMS 3.x
  *
@@ -78,6 +79,7 @@ class BackInStockService extends Component
             // prevent duplicate notification requests
             $record = BackInStockRecord::findOne(array(
                 'variantId' => $model->variantId,
+                'locale' => $model->locale,
                 'email' => $model->email,
                 'options' => json_encode($model->options),
                 'isNotified' => 0
@@ -87,6 +89,7 @@ class BackInStockService extends Component
                 // record doesn't exist so create it
                 $newRecord = new BackInStockRecord();
                 $newRecord->variantId = $model->variantId;
+                $newRecord->locale = $model->locale;
                 $newRecord->email = $model->email;
                 $newRecord->options = $model->options;
                 $newRecord->save();
@@ -107,7 +110,6 @@ class BackInStockService extends Component
 
                 return true;
             }
-
         }
 
         return false;
@@ -119,7 +121,8 @@ class BackInStockService extends Component
         // settings/defaults
         $view = Craft::$app->getView();
         $oldTemplateMode = $view->getTemplateMode();
-        $originalLanguage = Craft::$app->language;
+        $originalLanguage = $record->locale ? $record->locale : Craft::$app->language;
+        Craft::$app->language = $originalLanguage;
 
         if (strpos($templatePath, "craft-commerce-back-in-stock/emails") !== false) {
             $view->setTemplateMode($view::TEMPLATE_MODE_CP);
@@ -133,12 +136,15 @@ class BackInStockService extends Component
         if (!$variant) {
             $error = Craft::t('craft-commerce-back-in-stock', 'Could not find Variant for Back In Stock Notification email.');
             Craft::error($error, __METHOD__);
-            Craft::$app->language = $originalLanguage;
             $view->setTemplateMode($oldTemplateMode);
             return false;
         }
-        
+
         // making sure that the subject is correct for the preheader text
+        $subject = Craft::t('craft-commerce-back-in-stock', $subject, [
+            'variant' => $variant,
+        ]);
+
         $subject = $view->renderString($subject, [
             'variant' => $variant,
         ]);
@@ -162,7 +168,6 @@ class BackInStockService extends Component
                 'templatePath' => $templatePath,
             ]);
             Craft::error($error, __METHOD__);
-            Craft::$app->language = $originalLanguage;
             $view->setTemplateMode($oldTemplateMode);
             return false;
         }
@@ -174,7 +179,7 @@ class BackInStockService extends Component
         $newEmail = new Message();
         $newEmail->setFrom([Craft::parseEnv($settings['fromEmail']) => Craft::parseEnv($settings['fromName'])]);
         $newEmail->setTo($record->email);
-        $newEmail->setSubject($view->renderString($subject, $renderVariables));
+        $newEmail->setSubject($subject);
         $newEmail->setHtmlBody($view->renderTemplate($templatePath, $renderVariables));
 
         // attempt to send
@@ -182,7 +187,6 @@ class BackInStockService extends Component
             if (!Craft::$app->getMailer()->send($newEmail)) {
                 $error = Craft::t('craft-commerce-back-in-stock', 'Back In Stock email “{email}” could not be sent');
                 Craft::error($error, __METHOD__);
-                Craft::$app->language = $originalLanguage;
                 $view->setTemplateMode($oldTemplateMode);
                 return false;
             }
@@ -194,12 +198,10 @@ class BackInStockService extends Component
                 'order' => $order->id
             ]);
             Craft::error($error, __METHOD__);
-            Craft::$app->language = $originalLanguage;
             $view->setTemplateMode($oldTemplateMode);
             return false;
         }
 
         return true;
     }
-
 }

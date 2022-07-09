@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Back In Stock plugin for Craft CMS 3.x
  *
@@ -33,6 +34,8 @@ class BackInStockModel extends Model
     public $email;
 
     public $variantId;
+
+    public $locale;
 
     public $options;
 
@@ -71,5 +74,4 @@ class BackInStockModel extends Model
             [['email'], 'string', 'max' => 255],
         ];
     }
-
 }
