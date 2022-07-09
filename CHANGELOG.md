@@ -1,5 +1,10 @@
 # Release Notes for Back In Stock
 
+## 2.0.0 - 2022-07-09
+### Added
+- Craft CMS and Commerce 4 support.
+
+
 ## 1.4.3 - 2022-07-09
 ### Fixed/Added
 - Flash message is now set for those not using ajax to submit the form. The default message can be overwritten by using translations.
