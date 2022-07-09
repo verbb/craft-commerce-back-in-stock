@@ -1,46 +1,46 @@
 {
-    "name": "mediabeastnz/craft-commerce-back-in-stock",
-    "description": "Back in stock plugin for Craft Commerce that notifies subscribed users via an automated email",
-    "type": "craft-plugin",
-    "version": "1.4.0",
-    "keywords": [
-        "craft",
-        "cms",
-        "craftcms",
-        "craft-plugin",
-        "back in stock",
-        "notification",
-        "out of stock",
-        "re-stocked"
-    ],
-    "license": "proprietary",
-    "authors": [
-        {
-            "name": "Myles Beardsmore",
-            "homepage": "https://www.mylesthe.dev/"
-        }
-    ],
-    "require": {
-        "craftcms/cms": "^3.0.0"
-    },
-    "autoload": {
-        "psr-4": {
-          "mediabeastnz\\backinstock\\": "src/"
-        }
-    },
-    "support": {
-      "docs": "https://github.com/mediabeastnz/craft-commerce-back-in-stock/blob/master/README.md",
-      "issues": "https://github.com/mediabeastnz/craft-commerce-back-in-stock/issues"
-    },
-    "extra": {
-        "name": "Back In Stock",
-        "handle": "craft-commerce-back-in-stock",
-        "hasCpSettings": true,
-        "hasCpSection": false,
-        "changelogUrl": "https://raw.githubusercontent.com/mediabeastnz/craft-commerce-back-in-stock/master/CHANGELOG.md",
-        "components": {
-            "backInStockService": "mediabeastnz\\backinstock\\services\\BackInStockService"
-        },
-        "class": "mediabeastnz\\backinstock\\BackInStock"
+  "name": "mediabeastnz/craft-commerce-back-in-stock",
+  "description": "Back in stock plugin for Craft Commerce that notifies subscribed users via an automated email",
+  "type": "craft-plugin",
+  "version": "1.4.1",
+  "keywords": [
+    "craft",
+    "cms",
+    "craftcms",
+    "craft-plugin",
+    "back in stock",
+    "notification",
+    "out of stock",
+    "re-stocked"
+  ],
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "Myles Beardsmore",
+      "homepage": "https://www.mylesthe.dev/"
     }
+  ],
+  "require": {
+    "craftcms/cms": "^3.0.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "mediabeastnz\\backinstock\\": "src/"
+    }
+  },
+  "support": {
+    "docs": "https://github.com/mediabeastnz/craft-commerce-back-in-stock/blob/master/README.md",
+    "issues": "https://github.com/mediabeastnz/craft-commerce-back-in-stock/issues"
+  },
+  "extra": {
+    "name": "Back In Stock",
+    "handle": "craft-commerce-back-in-stock",
+    "hasCpSettings": true,
+    "hasCpSection": false,
+    "changelogUrl": "https://raw.githubusercontent.com/mediabeastnz/craft-commerce-back-in-stock/master/CHANGELOG.md",
+    "components": {
+      "backInStockService": "mediabeastnz\\backinstock\\services\\BackInStockService"
+    },
+    "class": "mediabeastnz\\backinstock\\BackInStock"
+  }
 }

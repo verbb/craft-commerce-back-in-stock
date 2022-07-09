@@ -1,5 +1,10 @@
 # Release Notes for Back In Stock
 
+## 1.4.1 - 2022-07-09
+### Fixed
+- Fixed an issue with customers being able to subscribe multiple times (Issue #14)
+- Fixed an issue with subject/preheader text not rendering correctly (Issue #9).
+
 ## 1.4.0 - 2020-05-27
 ### Added
 - Confirmation emails can be sent to the customer now (Feature Request #6).
