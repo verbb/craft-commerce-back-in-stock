@@ -51,7 +51,7 @@ class SendEmailNotification extends BaseJob
     /**
      * @inheritdoc
      */
-    public function execute($queue)
+    public function execute($queue): void
     {
         $record = BackInStockRecord::findOne($this->backInStockRecordId);
         if ($record) {
@@ -76,7 +76,7 @@ class SendEmailNotification extends BaseJob
     /**
      * @inheritdoc
      */
-    protected function defaultDescription(): string
+    protected function defaultDescription(): ?string
     {
         return Craft::t('craft-commerce-back-in-stock', 'Sending email for back in stock plugin');
     }

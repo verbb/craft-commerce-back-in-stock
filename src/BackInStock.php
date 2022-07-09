@@ -96,7 +96,7 @@ class BackInStock extends Plugin
     /**
      * @inheritdoc
      */
-    protected function createSettingsModel()
+    protected function createSettingsModel(): ?\craft\base\Model
     {
         return new Settings();
     }
@@ -104,7 +104,7 @@ class BackInStock extends Plugin
     /**
      * @inheritdoc
      */
-    protected function settingsHtml(): string
+    protected function settingsHtml(): ?string
     {
         return Craft::$app->view->renderTemplate(
             'craft-commerce-back-in-stock/settings',

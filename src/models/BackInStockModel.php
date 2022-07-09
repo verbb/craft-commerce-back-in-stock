@@ -54,7 +54,7 @@ class BackInStockModel extends Model
     /**
      * @inheritdoc
      */
-    public function init()
+    public function init(): void
     {
         parent::init();
 
@@ -66,7 +66,7 @@ class BackInStockModel extends Model
     /**
      * @inheritdoc
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['id', 'variantId'], 'number', 'integerOnly' => true],

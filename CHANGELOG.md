@@ -1,8 +1,8 @@
 # Release Notes for Back In Stock
 
-## 1.4.4 - 2022-07-09
-### Fixed
-- Updated migrations for new installs
+## 2.0.0 - 2022-07-09
+### Added
+- Craft CMS and Commerce 4 support.
 
 ## 1.4.3 - 2022-07-09
 ### Fixed/Added

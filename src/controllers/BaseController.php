@@ -34,7 +34,7 @@ class BaseController extends Controller
      *         The actions must be in 'kebab-case'
      * @access protected
      */
-    protected $allowAnonymous = ['register-interest'];
+    protected array|int|bool $allowAnonymous = ['register-interest'];
 
     // Public Methods
     // =========================================================================
