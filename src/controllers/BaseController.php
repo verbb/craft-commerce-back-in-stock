@@ -139,12 +139,16 @@ class BaseController extends Controller
             return null;
         }
 
+        $successMesaage = Craft::t('craft-commerce-back-in-stock', '{email} will be notified when {title} is available', ['email' => $email, 'title' => $variant->title]);
+
         if ($request->getAcceptsJson()) {
             return $this->asJson([
                 'success' => true,
-                'message' => Craft::t('craft-commerce-back-in-stock', '{email} will be notified when {title} is available', ['email' => $email, 'title' => $variant->title]),
+                'message' => $successMesaage,
             ]);
         }
+
+        Craft::$app->getSession()->setFlash('notice', $successMesaage);
 
         return $this->redirectToPostedUrl();
     }
