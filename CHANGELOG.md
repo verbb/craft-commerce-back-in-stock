@@ -1,5 +1,9 @@
 # Release Notes for Back In Stock
 
+## 1.4.4 - 2022-07-09
+### Fixed
+- Updated migrations for new installs
+
 ## 1.4.3 - 2022-07-09
 ### Fixed/Added
 - Flash message is now set for those not using ajax to submit the form. The default message can be overwritten by using translations.

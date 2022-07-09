@@ -2,7 +2,7 @@
   "name": "mediabeastnz/craft-commerce-back-in-stock",
   "description": "Back in stock plugin for Craft Commerce that notifies subscribed users via an automated email",
   "type": "craft-plugin",
-  "version": "1.4.3",
+  "version": "1.4.4",
   "keywords": [
     "craft",
     "cms",
