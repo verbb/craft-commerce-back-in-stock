@@ -1,5 +1,10 @@
 # Release Notes for Back In Stock
 
+## 1.4.2 - 2022-07-09
+### Added
+- Added support for translating the subject line. This uses the customers locale and stores it in the database for later. This will require a migration so remember to run `craft migrate/all` if it is not already a part fo your deploy script. 
+
+
 ## 1.4.1 - 2022-07-09
 ### Fixed
 - Fixed an issue with customers being able to subscribe multiple times (Issue #14)
