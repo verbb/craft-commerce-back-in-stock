@@ -2,7 +2,7 @@
   "name": "mediabeastnz/craft-commerce-back-in-stock",
   "description": "Back in stock plugin for Craft Commerce that notifies subscribed users via an automated email",
   "type": "craft-plugin",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "keywords": [
     "craft",
     "cms",
@@ -35,8 +35,6 @@
   "extra": {
     "name": "Back In Stock",
     "handle": "craft-commerce-back-in-stock",
-    "hasCpSettings": true,
-    "hasCpSection": false,
     "changelogUrl": "https://raw.githubusercontent.com/mediabeastnz/craft-commerce-back-in-stock/master/CHANGELOG.md",
     "components": {
       "backInStockService": "mediabeastnz\\backinstock\\services\\BackInStockService"

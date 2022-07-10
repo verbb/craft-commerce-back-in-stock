@@ -48,6 +48,8 @@ class BackInStock extends Plugin
     // Public Properties
     // =========================================================================
 
+    public bool $hasCpSettings = true;
+    public bool $hasCpSection = true;
 
     // Public Methods
     // =========================================================================
@@ -72,6 +74,13 @@ class BackInStock extends Plugin
             }
         );
 
+        Event::on(UrlManager::class, UrlManager::EVENT_REGISTER_CP_URL_RULES, function (RegisterUrlRulesEvent $event) {
+            $event->rules = array_merge($event->rules, [
+                'back-in-stock' => 'craft-commerce-back-in-stock/base/logs',
+                'back-in-stock/logs' => 'craft-commerce-back-in-stock/base/logs',
+            ]);
+        });
+
         Craft::info(
             Craft::t(
                 'craft-commerce-back-in-stock',
@@ -88,6 +97,14 @@ class BackInStock extends Plugin
             }
         });
 
+    }
+
+    public function getCpNavItem(): ?array
+    {
+        $navItem = parent::getCpNavItem();
+        $navItem['label'] = "Back in Stock";
+        $navItem['url'] = 'back-in-stock';
+        return $navItem;
     }
 
     // Protected Methods

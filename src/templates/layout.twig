@@ -1,0 +1,24 @@
+{% extends parentLayout | default("_layouts/cp") %}
+
+{% set tabs = {
+    logs: { label: "Logs" | t('craft-commerce-back-in-stock'), url: url('back-in-stock/logs') },
+    settings: { label: "Settings" | t('craft-commerce-back-in-stock'), url: url('settings/plugins/craft-commerce-back-in-stock') },
+} %}
+
+{% if title is not defined %}
+    {% set title = 'Back in Stock ' ~ tabs[selectedTab].label %}
+{% endif %}
+
+{% block content %}
+    {% block blockContent %}
+
+    {% endblock %}
+    
+    <div id="plugin-footer">
+        <div class="footer-left">
+            {% block footerButton %}
+
+            {% endblock %}
+        </div>
+    </div>
+{% endblock %}

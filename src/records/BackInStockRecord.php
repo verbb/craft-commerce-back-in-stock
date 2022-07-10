@@ -11,6 +11,7 @@
 namespace mediabeastnz\backinstock\records;
 
 use mediabeastnz\backinstock\BackInStock;
+use craft\commerce\elements\Variant;
 
 use Craft;
 use craft\db\ActiveRecord;
@@ -21,6 +22,14 @@ use craft\db\ActiveRecord;
  */
 class BackInStockRecord extends ActiveRecord
 {
+
+    public function getVariant()
+    {
+        $query = Variant::find();
+        $query->where(['commerce_variants.id' => $this->variantId]);
+        return $query->one();
+    }
+
     // Public Static Methods
     // =========================================================================
 

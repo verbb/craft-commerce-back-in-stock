@@ -1,0 +1,55 @@
+{% extends 'craft-commerce-back-in-stock/layout' %}
+
+{% set crumbs = [
+    { label: "Back in Stock" | t('craft-commerce-back-in-stock'), url: url('back-in-stock') },
+    { label: "Logs" | t('craft-commerce-back-in-stock'), url: url('back-in-stock/logs') }
+] %}
+
+{% set selectedTab = 'logs' %}
+
+{% block blockContent %}
+    <table id="logs" class="data fullwidth collapsible">
+        <thead>
+            <tr>
+                <th scope="col">{{ "Email" | t('craft-commerce-back-in-stock') }}</th>
+                <th scope="col">{{ "Product/Variant" | t('craft-commerce-back-in-stock') }}</th>
+                <th scope="col">{{ "Locale" | t('craft-commerce-back-in-stock') }}</th>
+                <th scope="col">{{ "Notified" | t('craft-commerce-back-in-stock') }}</th>
+                <th scope="col">{{ "Submitted" | t('craft-commerce-back-in-stock') }}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for entry in logEntries %}
+                <tr>
+                    <td class="col-label" data-title="{{ 'Email' | t('craft-commerce-back-in-stock') }}">
+                        <span class="">{{ entry.email }}</span>
+                    </td>
+
+                    <td class="col-label" data-title="{{ 'Product/Variant' | t('craft-commerce-back-in-stock') }}">
+                        <a href="{{entry.getVariant.product.cpEditUrl}}" class="log-result">{{ entry.getVariant.product.title }}/{{entry.getVariant.title}}</a>
+                    </td>
+
+                    <td class="col-label" data-title="{{ 'Locale' | t('craft-commerce-back-in-stock') }}">
+                        <span class="log-result">{{ entry.locale }}</span>
+                    </td>
+
+                     <td class="col-label" data-title="{{ 'Notified' | t('craft-commerce-back-in-stock') }}">
+                        {{ entry.isNotified ? '<span class="status live"></span> Yes' : '<span class="status"></span> No' }}
+                    </td>
+
+                    <td data-title="{{ 'Submitted' | t('craft-commerce-back-in-stock') }}">
+                        <code>
+                            {{ entry.dateCreated | date('short') ~ ' ' ~ entry.dateCreated | time('short') }}
+                        </code>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
+{% block footer %}
+    {% if logEntries|length %}
+        {% include "_includes/pagination" %}
+    {% endif %}
+{% endblock %}

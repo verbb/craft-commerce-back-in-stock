@@ -1,5 +1,9 @@
 # Release Notes for Back In Stock
 
+## 2.1.0 - 2022-07-10
+### Added
+- Ability to view customer submissions in the Control Panel.
+
 ## 2.0.0 - 2022-07-09
 ### Added
 - Craft CMS and Commerce 4 support.

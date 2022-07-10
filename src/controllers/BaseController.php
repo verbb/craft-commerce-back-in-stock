@@ -18,6 +18,10 @@ use mediabeastnz\backinstock\models\BackInStockModel;
 use Craft;
 use craft\web\Controller;
 use craft\commerce\elements\Variant;
+use yii\web\Response;
+use craft\db\Paginator;
+use craft\db\Query;
+use craft\web\twig\variables\Paginate;
 
 /**
  * @author    Myles Beardsmore
@@ -152,4 +156,43 @@ class BaseController extends Controller
 
         return $this->redirectToPostedUrl();
     }
+
+    public function actionLogs(): Response
+    {
+        $records = [];
+        $c = new Query();
+        $c->select('*')->from(['{{%backinstock_records}}'])->orderBy('dateCreated desc');
+        $paginator = new Paginator($c, [
+            'pageSize' => 30,
+            'currentPage' => \Craft::$app->request->pageNum,
+        ]);
+
+        $pageResults = $paginator->getPageResults();
+        if ($pageResults && count($pageResults)) {
+            foreach ($pageResults as $pageResult) {
+                $records[] = new BackInStockRecord($pageResult);
+            }
+
+            $pageOffset = $paginator->getPageOffset();
+            $page = Paginate::create($paginator);
+
+            return $this->renderTemplate('craft-commerce-back-in-stock/logs', [
+                'logEntries' => $records,
+                'pageInfo' => [
+                    'first' => $pageOffset + 1,
+                    'last' => $pageOffset + count($pageResults),
+                    'total' => $paginator->getTotalResults(),
+                    'currentPage' => $paginator->getCurrentPage(),
+                    'totalPages' => $paginator->getTotalPages(),
+                    'prevUrl' => $page->getPrevUrl(),
+                    'nextUrl' => $page->getNextUrl(),
+                ],
+            ]);
+        } else {
+            return $this->renderTemplate('craft-commerce-back-in-stock/logs', [
+                'logEntries' => $records,
+            ]);
+        }
+    }
+
 }
