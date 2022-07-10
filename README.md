@@ -1,6 +1,6 @@
 <p align="center"><img src="./src/icon.svg" width="100" height="100" alt="Back In Stock plugin for Craft Commerce 2"></p>
 
-# Back In Stock plugin for Craft Commerce 2
+# Back In Stock plugin for Craft Commerce 4
 
 This plugin allows anyone to register interest on out of stock products.
 If they do and the product becomes re-stocked an email will automatically be sent to all interested emails with a link prompting them to buy now.
@@ -11,11 +11,11 @@ The plugin comes with a [basic, responsive email template](./src/templates/email
 
 Either by the plugin store (search "Back In Stock") or via composer.
 
-`"mediabeastnz/craft-commerce-back-in-stock": "^1.0.0"`
+`"mediabeastnz/craft-commerce-back-in-stock": "^2.0.0"`
 
 ## Requirements
 
-This plugin requires Craft CMS 3.0.0 or later and Craft Commerce 2.0 or later.
+This plugin requires Craft CMS 4.0.0 or later and Craft Commerce 4.0 or later.
 
 ## Frontend form setup
 
