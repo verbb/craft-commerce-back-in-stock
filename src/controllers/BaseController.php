@@ -56,7 +56,7 @@ class BaseController extends Controller
 
         $email = $request->getParam('email');
         $variantId = $request->getParam('variantId');
-        $options = $request->getParam('options', []);
+        $options = $request->getParam('options', json_encode([]));
         $locale = Craft::$app->language;
 
         if ($variantId == '' || !is_numeric($variantId)) {
