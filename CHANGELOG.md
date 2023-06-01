@@ -1,5 +1,9 @@
 # Release Notes for Back In Stock
 
+## 2.1.1 - 2023-06-01
+### Fixed
+- Fixed issue - duplicate entries when options are supplied.
+
 ## 2.1.0 - 2022-07-10
 ### Added
 - Ability to view customer submissions in the Control Panel.
