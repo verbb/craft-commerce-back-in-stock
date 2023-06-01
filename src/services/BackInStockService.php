@@ -81,7 +81,7 @@ class BackInStockService extends Component
                 'variantId' => $model->variantId,
                 'locale' => $model->locale,
                 'email' => $model->email,
-                'options' => json_encode($model->options),
+                'options' => $model->options,
                 'isNotified' => 0
             ));
 
