@@ -1,116 +1,130 @@
 <?php
-/**
- * Back In Stock plugin for Craft CMS 3.x
- *
- * Back in stock Craft Commerce 2 plugin
- *
- * @link      https://www.mylesthe.dev/
- * @copyright Copyright (c) 2019 Myles Beardsmore
- */
+namespace verbb\backinstock;
 
-namespace mediabeastnz\backinstock;
-
-use mediabeastnz\backinstock\services\BackInStockService as BackInStockServiceService;
-use mediabeastnz\backinstock\records\BackInStockRecord;
-use mediabeastnz\backinstock\models\BackInStockModel;
-use mediabeastnz\backinstock\models\Settings;
+use verbb\backinstock\base\PluginTrait;
+use verbb\backinstock\models\Settings;
+use verbb\backinstock\variables\BackInStockVariable;
 
 use Craft;
 use craft\base\Plugin;
-use craft\services\Plugins;
 use craft\events\ModelEvent;
-use craft\events\PluginEvent;
-use craft\web\UrlManager;
 use craft\events\RegisterUrlRulesEvent;
-use craft\commerce\elements\Variant;
-use craft\services\Elements;
+use craft\helpers\UrlHelper;
+use craft\web\twig\variables\CraftVariable;
+use craft\web\UrlManager;
 
 use yii\base\Event;
 
-/**
- * Class BackInStock
- *
- * @author    Myles Beardsmore
- * @package   BackInStock
- *
- * @property  BackInStockServiceService $backInStockService
- */
+use craft\commerce\elements\Variant;
+
 class BackInStock extends Plugin
 {
-    // Static Properties
+    // Properties
     // =========================================================================
 
-    /**
-     * @var BackInStock
-     */
-    public static $plugin;
+    public bool $hasCpSection = true;
+    public bool $hasCpSettings = true;
+    public string $schemaVersion = '1.1.0';
 
-    // Public Properties
+
+    // Traits
     // =========================================================================
+
+    use PluginTrait;
 
 
     // Public Methods
     // =========================================================================
 
-    /**
-     * @inheritdoc
-     */
-    public function init()
+    public function init(): void
     {
         parent::init();
+
         self::$plugin = $this;
 
-        $this->setComponents([
-            'backInStockService' => BackInStockServiceService::class,
-        ]);
+        $this->_setPluginComponents();
+        $this->_setLogging();
+        $this->_registerVariables();
+        $this->_registerCraftEventListeners();
 
-        Event::on(
-            UrlManager::class,
-            UrlManager::EVENT_REGISTER_SITE_URL_RULES,
-            function (RegisterUrlRulesEvent $event) {
-                $event->rules['register-interest'] = '/craft-commerce-back-in-stock/base/register-interest';
-            }
-        );
+        if (Craft::$app->getRequest()->getIsCpRequest()) {
+            $this->_registerCpRoutes();
+        }
 
-        Craft::info(
-            Craft::t(
-                'craft-commerce-back-in-stock',
-                '{name} plugin loaded',
-                ['name' => $this->name]
-            ),
-            __METHOD__
-        );
-
-        Event::on(Variant::class, Variant::EVENT_BEFORE_SAVE, function(ModelEvent $event) {
-            $variant = $event->sender;
-            if ($variant->stock > 0 || $variant->hasUnlimitedStock) {
-                $this->backInStockService->isBackInStock($variant);
-            }
-        });
-
+        $this->hasCpSection = $this->getSettings()->hasCpSection;
     }
+
+    public function getPluginName(): string
+    {
+        return Craft::t('craft-commerce-back-in-stock', $this->getSettings()->pluginName);
+    }
+
+    public function getCpNavItem(): array
+    {
+        $nav = parent::getCpNavItem();
+
+        $nav['label'] = $this->getPluginName();
+        $nav['url'] = 'back-in-stock';
+
+        if (Craft::$app->getUser()->checkPermission('accessPlugin-craft-commerce-back-in-stock')) {
+            $nav['subnav']['logs'] = [
+                'label' => Craft::t('craft-commerce-back-in-stock', 'Logs'),
+                'url' => 'back-in-stock/logs',
+            ];
+        }
+
+        if (Craft::$app->getUser()->getIsAdmin() && Craft::$app->getConfig()->getGeneral()->allowAdminChanges) {
+            $nav['subnav']['settings'] = [
+                'label' => Craft::t('craft-commerce-back-in-stock', 'Settings'),
+                'url' => 'back-in-stock/settings',
+            ];
+        }
+
+        return $nav;
+    }
+
+    public function getSettingsResponse(): mixed
+    {
+        return Craft::$app->getResponse()->redirect(UrlHelper::cpUrl('back-in-stock/settings'));
+    }
+
 
     // Protected Methods
     // =========================================================================
 
-    /**
-     * @inheritdoc
-     */
-    protected function createSettingsModel(): ?\craft\base\Model
+    protected function createSettingsModel(): Settings
     {
         return new Settings();
     }
 
-    /**
-     * @inheritdoc
-     */
-    protected function settingsHtml(): ?string
+
+    // Private Methods
+    // =========================================================================
+
+    private function _registerCpRoutes(): void
     {
-        return Craft::$app->view->renderTemplate(
-            'craft-commerce-back-in-stock/settings',
-            [
-                'settings' => $this->getSettings()
-            ]
-        );
+        Event::on(UrlManager::class, UrlManager::EVENT_REGISTER_CP_URL_RULES, function(RegisterUrlRulesEvent $event) {
+            $event->rules['back-in-stock'] = ['template' => 'craft-commerce-back-in-stock/index'];
+            $event->rules['back-in-stock/logs'] = 'craft-commerce-back-in-stock/logs/index';
+            $event->rules['back-in-stock/settings'] = 'craft-commerce-back-in-stock/plugin/settings';
+        });
+    }
+
+    private function _registerVariables(): void
+    {
+        Event::on(CraftVariable::class, CraftVariable::EVENT_INIT, function(Event $event) {
+            $event->sender->set('backInStock', BackInStockVariable::class);
+        });
+    }
+
+    private function _registerCraftEventListeners(): void
+    {
+        Event::on(Variant::class, Variant::EVENT_BEFORE_SAVE, function(ModelEvent $event) {
+            $variant = $event->sender;
+            
+            if ($variant->stock > 0 || $variant->hasUnlimitedStock) {
+                $this->getService()->isBackInStock($variant);
+            }
+        });
     }
 }

@@ -1,154 +1,84 @@
 <?php
+namespace verbb\backinstock\controllers;
 
-/**
- * Back In Stock plugin for Craft CMS 3.x
- *
- * Back in stock Craft Commerce 2 plugin
- *
- * @link      https://www.mylesthe.dev/
- * @copyright Copyright (c) 2019 Myles Beardsmore
- */
-
-namespace mediabeastnz\backinstock\controllers;
-
-use mediabeastnz\backinstock\BackInStock;
-use mediabeastnz\backinstock\records\BackInStockRecord;
-use mediabeastnz\backinstock\models\BackInStockModel;
+use verbb\backinstock\BackInStock;
+use verbb\backinstock\models\Log;
+use verbb\backinstock\models\Settings;
+use verbb\backinstock\queue\jobs\SendEmailNotification;
 
 use Craft;
+use craft\helpers\Json;
+use craft\helpers\UrlHelper;
 use craft\web\Controller;
+
+use yii\web\Response;
+
 use craft\commerce\elements\Variant;
 
-/**
- * @author    Myles Beardsmore
- * @package   BackInStock
- */
 class BaseController extends Controller
 {
-
-    // Protected Properties
+    // Properties
     // =========================================================================
 
-    /**
-     * @var    bool|array Allows anonymous access to this controller's actions.
-     *         The actions must be in 'kebab-case'
-     * @access protected
-     */
     protected array|int|bool $allowAnonymous = ['register-interest'];
+
 
     // Public Methods
     // =========================================================================
 
-    /**
-     * @return mixed
-     */
-    public function actionRegisterInterest()
+    public function actionRegisterInterest(): ?Response
     {
-
         $this->requirePostRequest();
 
         $session = Craft::$app->getSession();
-        $request = Craft::$app->getRequest();
 
-        $email = $request->getParam('email');
-        $variantId = $request->getParam('variantId');
-        $options = $request->getParam('options', []);
-        $locale = Craft::$app->language;
+        $log = new Log();
+        $log->variantId = $this->request->getParam('variantId');
+        $log->email = $this->request->getParam('email');
+        $log->options = $this->request->getParam('options') ?? [];
+        $log->locale = Craft::$app->language;
 
-        if ($variantId == '' || !is_numeric($variantId)) {
-            $error = Craft::t('craft-commerce-back-in-stock', 'Sorry you couldn\'t be added to the notifications list');
+        if (!BackInStock::$plugin->getLogs()->saveLog($log)) {
+            $error = array_values($log->getErrors())[0][0] ?? Craft::t('craft-commerce-back-in-stock', 'Sorry you couldn‘t be added to the notifications list.');
 
-            if ($request->getAcceptsJson()) {
+            BackInStock::error(Json::encode($log->getErrors()));
+
+            if ($this->request->getAcceptsJson()) {
                 return $this->asJson([
                     'success' => false,
                     'error' => $error,
                 ]);
             }
 
-            Craft::$app->getSession()->setError($error);
+            $session->setError($error);
 
             return null;
         }
 
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            $error = Craft::t('craft-commerce-back-in-stock', 'Please enter a valid email address');
+        // Check settings to see if confirmation is required
+        $template = BackInStock::$plugin->getSettings()->confirmationEmailTemplate;
+        $subject = BackInStock::$plugin->getSettings()->confirmationEmailSubject;
+        $sendConfirmation = BackInStock::$plugin->getSettings()->sendConfirmation;
 
-            if ($request->getAcceptsJson()) {
-                return $this->asJson([
-                    'success' => false,
-                    'error' => $error,
-                ]);
-            }
-
-            Craft::$app->getSession()->setError($error);
-
-            return null;
+        if ($sendConfirmation) {
+            Craft::$app->getQueue()->push(new SendEmailNotification([
+                'confirmation' => true,
+                'logId' => $log->id,
+                'subject' => $subject,
+                'template' => $template,
+            ]));
         }
 
-        //check is product exists and is actually out of stock
-        $variant = Variant::findOne($variantId);
+        $successMesaage = Craft::t('craft-commerce-back-in-stock', '{email} will be notified when {title} is available.', ['email' => $log->email, 'title' => $log->getVariant()->title]);
 
-        if (!$variant) {
-            $error = Craft::t('craft-commerce-back-in-stock', 'Unable to find variant');
-
-            if ($request->getAcceptsJson()) {
-                return $this->asJson([
-                    'success' => false,
-                    'error' => $error,
-                ]);
-            }
-
-            Craft::$app->getSession()->setError($error);
-
-            return null;
-        }
-
-        if ($variant->hasStock()) {
-            $error = Craft::t('craft-commerce-back-in-stock', 'Variant is in stock!');
-
-            if ($request->getAcceptsJson()) {
-                return $this->asJson([
-                    'success' => false,
-                    'error' => $error,
-                ]);
-            }
-
-            Craft::$app->getSession()->setError($error);
-
-            return null;
-        }
-
-        $model = new BackInStockModel();
-        $model->variantId = $variantId;
-        $model->email = $email;
-        $model->options = $options;
-        $model->locale = $locale;
-
-        if (!BackInStock::$plugin->backInStockService->createBackInStockRecord($model)) {
-            $error = Craft::t('craft-commerce-back-in-stock', 'Your email is already subscribed to receive updates for this product');
-
-            if ($request->getAcceptsJson()) {
-                return $this->asJson([
-                    'success' => false,
-                    'error' => $error,
-                ]);
-            }
-
-            Craft::$app->getSession()->setError($error);
-
-            return null;
-        }
-
-        $successMesaage = Craft::t('craft-commerce-back-in-stock', '{email} will be notified when {title} is available', ['email' => $email, 'title' => $variant->title]);
-
-        if ($request->getAcceptsJson()) {
+        if ($this->request->getAcceptsJson()) {
             return $this->asJson([
                 'success' => true,
                 'message' => $successMesaage,
             ]);
         }
 
-        Craft::$app->getSession()->setFlash('notice', $successMesaage);
+        $session->setFlash('notice', $successMesaage);
 
         return $this->redirectToPostedUrl();
     }

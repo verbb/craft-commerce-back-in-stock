@@ -1,117 +1,71 @@
 <?php
-/**
- * Back In Stock plugin for Craft CMS 3.x
- *
- * Back in stock Craft Commerce 2 plugin
- *
- * @link      https://www.mylesthe.dev/
- * @copyright Copyright (c) 2019 Myles Beardsmore
- */
+namespace verbb\backinstock\migrations;
 
-namespace mediabeastnz\backinstock\migrations;
-
-use mediabeastnz\backinstock\BackInStock;
+use verbb\backinstock\BackInStock;
 
 use Craft;
-use craft\config\DbConfig;
 use craft\db\Migration;
+use craft\helpers\MigrationHelper;
 
-/**
- * @author    Myles Beardsmore
- * @package   BackInStock
- */
 class Install extends Migration
 {
-    // Public Properties
-    // =========================================================================
-
-
     // Public Methods
     // =========================================================================
 
-    /**
-     * @inheritdoc
-     */
-    public function safeUp()
+    public function safeUp(): bool
     {
-        if (!$this->db->tableExists('{{%backinstock_records}}')) {
-            $this->createTables();
-            $this->createIndexes();
-            $this->addForeignKeys();
-        }
+        $this->createTables();
+        $this->createIndexes();
+        $this->createForeignKeys();
+
+        return true;
     }
 
-   /**
-     * @inheritdoc
-     */
-    public function safeDown()
+    public function safeDown(): bool
     {
-        $this->removeTables();
+        $this->dropForeignKeys();
+        $this->dropTables();
+
+        return true;
     }
 
-    // Protected Methods
-    // =========================================================================
-
-    /**
-     * @return bool
-     */
-    protected function createTables()
+    public function createTables(): void
     {
-        $tablesCreated = false;
-        $tableSchema = Craft::$app->db->schema->getTableSchema('{{%backinstock_records}}');
-        if ($tableSchema === null) {
-            $tablesCreated = true;
-            $this->createTable(
-                '{{%backinstock_records}}',
-                [
-                    'id' => $this->primaryKey(),
-                    'dateCreated' => $this->dateTime()->notNull(),
-                    'dateUpdated' => $this->dateTime()->notNull(),
-                    'uid' => $this->uid(),
-                    'email' => $this->string(255)->notNull()->defaultValue(''),
-                    'variantId' => $this->integer()->notNull(),
-                    'locale' => $this->string(255),
-                    'options' => $this->text(),
-                    'isNotified' => $this->boolean()->defaultValue(false),
-                ]
-            );
-        }
-
-        return $tablesCreated;
+        $this->archiveTableIfExists('{{%backinstock_records}}');
+        $this->createTable('{{%backinstock_records}}', [
+            'id' => $this->primaryKey(),
+            'email' => $this->string(255)->notNull()->defaultValue(''),
+            'variantId' => $this->integer()->notNull(),
+            'locale' => $this->string(255),
+            'options' => $this->text(),
+            'isNotified' => $this->boolean()->defaultValue(false),
+            'dateCreated' => $this->dateTime()->notNull(),
+            'dateUpdated' => $this->dateTime()->notNull(),
+            'uid' => $this->uid(),
+        ]);
     }
 
-
-    /**
-     * @return void
-     */
-    public function createIndexes()
+    public function createIndexes(): void
     {
         $this->createIndex(null, '{{%backinstock_records}}', ['variantId'], false);
     }
 
-    
-    /**
-     * @return void
-     */
-    protected function addForeignKeys()
+    public function createForeignKeys(): void
     {
-        $this->addForeignKey(
-            $this->db->getForeignKeyName('{{%backinstock_records}}', 'variantId'),
-            '{{%backinstock_records}}',
-            'variantId',
-            '{{%commerce_variants}}',
-            'id',
-            'CASCADE',
-            'CASCADE'
-        );
+        if ($this->db->tableExists('{{%commerce_variants}}')) {
+            $this->addForeignKey(null, '{{%backinstock_records}}', ['variantId'], '{{%commerce_variants}}', ['id'], 'CASCADE', 'CASCADE');
+        }
     }
 
-
-    /**
-     * @return void
-     */
-    protected function removeTables()
+    public function dropTables(): void
     {
         $this->dropTableIfExists('{{%backinstock_records}}');
+    }
+
+    public function dropForeignKeys(): void
+    {
+        if ($this->db->tableExists('{{%backinstock_records}}')) {
+            MigrationHelper::dropAllForeignKeysOnTable('{{%backinstock_records}}', $this);
+        }
     }
 }

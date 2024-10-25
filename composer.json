@@ -1,46 +1,48 @@
 {
-  "name": "mediabeastnz/craft-commerce-back-in-stock",
-  "description": "Back in stock plugin for Craft Commerce that notifies subscribed users via an automated email",
-  "type": "craft-plugin",
-  "version": "2.0.0",
-  "keywords": [
-    "craft",
-    "cms",
-    "craftcms",
-    "craft-plugin",
-    "back in stock",
-    "notification",
-    "out of stock",
-    "re-stocked"
-  ],
-  "license": "proprietary",
-  "authors": [
-    {
-      "name": "Myles Beardsmore",
-      "homepage": "https://www.mylesthe.dev/"
-    }
-  ],
-  "require": {
-    "craftcms/cms": "^4.0.0"
-  },
-  "autoload": {
-    "psr-4": {
-      "mediabeastnz\\backinstock\\": "src/"
-    }
-  },
-  "support": {
-    "docs": "https://github.com/mediabeastnz/craft-commerce-back-in-stock/blob/master/README.md",
-    "issues": "https://github.com/mediabeastnz/craft-commerce-back-in-stock/issues"
-  },
-  "extra": {
-    "name": "Back In Stock",
-    "handle": "craft-commerce-back-in-stock",
-    "hasCpSettings": true,
-    "hasCpSection": false,
-    "changelogUrl": "https://raw.githubusercontent.com/mediabeastnz/craft-commerce-back-in-stock/master/CHANGELOG.md",
-    "components": {
-      "backInStockService": "mediabeastnz\\backinstock\\services\\BackInStockService"
+    "name": "verbb/back-in-stock",
+    "description": "Subscribe to out of stock products to receive an email when back in stock.",
+    "type": "craft-plugin",
+    "version": "3.0.0",
+    "keywords": [
+        "craft",
+        "cms",
+        "craftcms",
+        "craft-plugin",
+        "back-in-stock"
+    ],
+    "support": {
+        "email": "support@verbb.io",
+        "issues": "https://github.com/verbb/back-in-stock/issues?state=open",
+        "source": "https://github.com/verbb/back-in-stock",
+        "docs": "https://github.com/verbb/back-in-stock",
+        "rss": "https://github.com/verbb/back-in-stock/commits/v2.atom"
     },
-    "class": "mediabeastnz\\backinstock\\BackInStock"
-  }
+    "license": "proprietary",
+    "authors": [
+        {
+            "name": "Verbb",
+            "homepage": "https://verbb.io"
+        },
+        {
+            "name": "Myles Beardsmore",
+            "homepage": "https://github.com/mediabeastnz"
+        }
+    ],
+    "require": {
+        "php": "^8.0.2",
+        "craftcms/cms": "^4.0.0",
+        "craftcms/commerce": "^4.0.0",
+        "verbb/base": "^2.0.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "verbb\\backinstock\\": "src/"
+        }
+    },
+    "extra": {
+        "name": "Back In Stock",
+        "handle": "craft-commerce-back-in-stock",
+        "changelogUrl": "https://raw.githubusercontent.com/verbb/back-in-stock/craft-4/CHANGELOG.md",
+        "class": "verbb\\backinstock\\BackInStock"
+    }
 }

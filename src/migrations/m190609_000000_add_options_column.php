@@ -1,26 +1,16 @@
 <?php
-/**
- * Back In Stock plugin for Craft CMS 3.x
- *
- * Back in stock Craft Commerce 2 plugin
- *
- * @link      https://www.mylesthe.dev/
- * @copyright Copyright (c) 2019 Myles Beardsmore
- */
+namespace verbb\backinstock\migrations;
 
-namespace mediabeastnz\backinstock\migrations;
-
-use mediabeastnz\backinstock\BackInStock;
-
+use Craft;
 use craft\db\Migration;
-use craft\db\Query;
-
-use yii\db\Expression;
 
 class m190609_000000_add_options_column extends Migration
 {
-    public function safeUp()
-    {   
+    // Public Methods
+    // =========================================================================
+
+    public function safeUp(): bool
+    {
         if (!$this->db->columnExists('{{%backinstock_records}}', 'options')) {
             $this->addColumn('{{%backinstock_records}}', 'options', $this->text()->after('variantId'));
         }
@@ -28,10 +18,9 @@ class m190609_000000_add_options_column extends Migration
         return true;
     }
 
-    public function safeDown()
+    public function safeDown(): bool
     {
         echo "m190609_000000_add_options_column cannot be reverted.\n";
-
         return false;
     }
 }
