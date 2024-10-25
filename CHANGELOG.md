@@ -1,5 +1,11 @@
 # Changelog
 
+## 4.0.0 - 2024-10-25
+
+### Changed
+- Now requires Craft 5.0+.
+- Now requires Craft Commerce 5.0+.
+
 ## 3.0.0 - 2024-10-25
 > {note} The plugin’s package name has changed to `verbb/back-in-stock`. Back in Stock will need be updated to 2.0 from a terminal, by running `composer require verbb/back-in-stock && composer remove mediabeastnz/craft-commerce-back-in-stock`.
 

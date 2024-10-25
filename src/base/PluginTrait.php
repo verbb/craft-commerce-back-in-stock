@@ -7,37 +7,35 @@ use verbb\backinstock\services\Service;
 
 use Craft;
 
-use yii\log\Logger;
-
-use verbb\base\BaseHelper;
+use verbb\base\LogTrait;
+use verbb\base\helpers\Plugin;
 
 trait PluginTrait
 {
     // Static Properties
     // =========================================================================
 
-    public static BackInStock $plugin;
+    public static ?BackInStock $plugin = null;
+    
 
-
-    // Public Methods
+    // Traits
     // =========================================================================
 
-    public static function log(string $message, array $attributes = []): void
+    use LogTrait;
+
+    // Static Methods
+    // =========================================================================
+
+    public static function config(): array
     {
-        if ($attributes) {
-            $message = Craft::t('craft-commerce-back-in-stock', $message, $attributes);
-        }
+        Plugin::bootstrapPlugin('craft-commerce-back-in-stock');
 
-        Craft::getLogger()->log($message, Logger::LEVEL_INFO, 'craft-commerce-back-in-stock');
-    }
-
-    public static function error(string $message, array $attributes = []): void
-    {
-        if ($attributes) {
-            $message = Craft::t('craft-commerce-back-in-stock', $message, $attributes);
-        }
-
-        Craft::getLogger()->log($message, Logger::LEVEL_ERROR, 'craft-commerce-back-in-stock');
+        return [
+            'components' => [
+                'logs' => Logs::class,
+                'service' => Service::class,
+            ],
+        ];
     }
 
 
@@ -52,25 +50,6 @@ trait PluginTrait
     public function getService(): Service
     {
         return $this->get('service');
-    }
-
-
-    // Private Methods
-    // =========================================================================
-
-    private function _setPluginComponents(): void
-    {
-        $this->setComponents([
-            'logs' => Logs::class,
-            'service' => Service::class,
-        ]);
-
-        BaseHelper::registerModule();
-    }
-
-    private function _setLogging(): void
-    {
-        BaseHelper::setFileLogging('craft-commerce-back-in-stock');
     }
 
 }
