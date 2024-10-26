@@ -9,6 +9,7 @@ use verbb\backinstock\records\Log as LogRecord;
 
 use Craft;
 use craft\base\Component;
+use craft\helpers\App;
 use craft\helpers\Json;
 use craft\helpers\UrlHelper;
 use craft\mail\Message;
@@ -126,7 +127,7 @@ class Service extends Component
 
         // build the email
         $newEmail = new Message();
-        $newEmail->setFrom([Craft::parseEnv($settings['fromEmail']) => Craft::parseEnv($settings['fromName'])]);
+        $newEmail->setFrom([App::parseEnv($settings['fromEmail']) => App::parseEnv($settings['fromName'])]);
         $newEmail->setTo($log->email);
         $newEmail->setSubject($subject);
         $newEmail->setHtmlBody($view->renderTemplate($templatePath, $renderVariables));
