@@ -35,7 +35,7 @@ class BaseController extends Controller
         $log = new Log();
         $log->variantId = $this->request->getParam('variantId');
         $log->email = $this->request->getParam('email');
-        $log->options = $this->request->getParam('options') ?? [];
+        $log->options = Json::decode($this->request->getParam('options')) ?? [];
         $log->locale = Craft::$app->language;
 
         if (!BackInStock::$plugin->getLogs()->saveLog($log)) {
