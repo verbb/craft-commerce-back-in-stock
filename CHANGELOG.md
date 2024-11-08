@@ -1,5 +1,10 @@
 # Changelog
 
+## 4.0.1 - 2024-11-08
+
+### Fixed
+- Fix an error when adding an email with options.
+
 ## 4.0.0 - 2024-10-25
 
 ### Changed
