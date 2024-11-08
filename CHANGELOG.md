@@ -1,5 +1,10 @@
 # Changelog
 
+## 3.0.1 - 2024-11-08
+
+### Fixed
+- Fix an error when adding an email with options.
+
 ## 3.0.0 - 2024-10-25
 > {note} The plugin’s package name has changed to `verbb/back-in-stock`. Back in Stock will need be updated to 3.0 from a terminal, by running `composer require verbb/back-in-stock && composer remove mediabeastnz/craft-commerce-back-in-stock`.
 
