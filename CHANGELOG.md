@@ -1,5 +1,16 @@
 # Changelog
 
+## 3.0.2 - Unreleasd
+
+### Added
+- Logs are now sortable.
+- Logs can be searched.
+- Logs are now lazy-loaded for performance.
+
+### Changed
+- Logs are now paginated.
+- Logs are now listed newest first by default.
+
 ## 3.0.1 - 2024-11-08
 
 ### Fixed
