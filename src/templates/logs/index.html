@@ -16,55 +16,33 @@
 
 {% endblock %}
 
-{% set tableData = [] %}
-
-{% for log in logs %}
-    {% set productLink = {} %}
-
-    {% if log.getVariant() %}
-        {% set product = log.getVariant().getProduct() %}
-
-        {% set productLink = {
-            title: product.title,
-            cpEditUrl: product.cpEditUrl,
-        } %}
-    {% endif %}
-
-    {% set tableData = tableData | merge([{
-        title: log.email,
-        email: log.email,
-        variantId: productLink,
-        locale: log.locale,
-        isNotified: log.isNotified,
-        dateCreated: log.dateCreated | datetime('short'),
-    }]) %}
-{% endfor %}
-
 {% js %}
     var columns = [
-        { name: '__slot:title', title: Craft.t('craft-commerce-back-in-stock', 'Email') },
-        { name: 'variantId', title: Craft.t('craft-commerce-back-in-stock', 'Product/Variant'), callback: function(value) {
+        { name: '__slot:title', title: Craft.t('craft-commerce-back-in-stock', 'Email'), sortField: 'email' },
+        { name: 'variantId', title: Craft.t('craft-commerce-back-in-stock', 'Product/Variant'), sortField: 'variantId', callback: function(value) {
             if (value) {
                 return '<a href="' + value.cpEditUrl + '">' + value.title + '</a>';
             } else {
                 return '-';
             }
         }  },
-        { name: 'locale', title: Craft.t('craft-commerce-back-in-stock', 'Locale') },
-        { name: 'isNotified', title: Craft.t('craft-commerce-back-in-stock', 'Notified'), callback: function(value) {
+        { name: 'locale', title: Craft.t('craft-commerce-back-in-stock', 'Locale'), sortField: 'locale' },
+        { name: 'isNotified', title: Craft.t('craft-commerce-back-in-stock', 'Notified'), sortField: 'isNotified', callback: function(value) {
             if (value) {
                 return '<span class="status on"></span>' + Craft.t('craft-commerce-back-in-stock', 'Yes');
             } else {
                 return '<span class="status"></span>' + Craft.t('craft-commerce-back-in-stock', 'No');
             }
         } },
-        { name: 'dateCreated', title: Craft.t('craft-commerce-back-in-stock', 'Submitted') },
+        { name: 'dateCreated', title: Craft.t('craft-commerce-back-in-stock', 'Submitted'), sortField: 'dateCreated' },
     ];
 
     new Craft.VueAdminTable({
         columns: columns,
         container: '#logs-vue-admin-table',
         emptyMessage: Craft.t('craft-commerce-back-in-stock', 'No logs exist yet.'),
-        tableData: {{ tableData | json_encode | raw }},
+        tableDataEndpoint: Craft.getActionUrl('craft-commerce-back-in-stock/logs/get-logs'),
+        search: true,
+        perPage: 100,
     });
 {% endjs %}
