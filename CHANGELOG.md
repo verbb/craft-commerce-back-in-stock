@@ -1,5 +1,16 @@
 # Changelog
 
+## 4.0.2 - Unreleased
+
+### Added
+- Logs are now sortable.
+- Logs can be searched.
+- Logs are now lazy-loaded for performance.
+
+### Changed
+- Logs are now paginated.
+- Logs are now listed newest first by default.
+
 ## 4.0.1 - 2024-11-08
 
 ### Fixed
