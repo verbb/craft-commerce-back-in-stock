@@ -1,6 +1,6 @@
 # Changelog
 
-## 3.0.2 - Unreleasd
+## 3.0.2 - Unreleased
 
 ### Added
 - Logs are now sortable.
