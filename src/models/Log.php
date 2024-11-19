@@ -45,9 +45,13 @@ class Log extends Model
         return $rules;
     }
 
-    public function getVariant(): Variant
+    public function getVariant(): ?Variant
     {
-        return Variant::findOne($this->variantId);
+        if ($this->variantId) {
+            return Variant::findOne($this->variantId);
+        }
+
+        return null;
     }
 
     public function validateVariant(string $attribute, ?array $params, InlineValidator $validator): void

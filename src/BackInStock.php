@@ -120,7 +120,7 @@ class BackInStock extends Plugin
         Event::on(Variant::class, Variant::EVENT_BEFORE_SAVE, function(ModelEvent $event) {
             $variant = $event->sender;
             
-            if ($variant->stock > 0 || $variant->hasUnlimitedStock) {
+            if ($variant->id && ($variant->stock > 0 || $variant->hasUnlimitedStock)) {
                 $this->getService()->isBackInStock($variant);
             }
         });
