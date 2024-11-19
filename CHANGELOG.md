@@ -1,6 +1,6 @@
 # Changelog
 
-## 3.0.2 - Unreleased
+## 3.0.2 - 2024-11-20
 
 ### Added
 - Logs are now sortable.
@@ -10,6 +10,9 @@
 ### Changed
 - Logs are now paginated.
 - Logs are now listed newest first by default.
+
+### Fixed
+- Fix an error where checks for out of stock variants were being performed on unsaved variants.
 
 ## 3.0.1 - 2024-11-08
 
