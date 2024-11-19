@@ -75,6 +75,16 @@ class Service extends Component
             $view->setTemplateMode($view::TEMPLATE_MODE_SITE);
         }
 
+        if (!$log->variantId) {
+            $error = Craft::t('craft-commerce-back-in-stock', 'Could not find Variant for Back In Stock Notification email.');
+            
+            BackInStock::error($error);
+            
+            $view->setTemplateMode($oldTemplateMode);
+            
+            return false;
+        }
+
         $variant = Variant::findOne($log->variantId);
 
         if (!$variant) {
