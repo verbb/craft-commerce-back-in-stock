@@ -1,5 +1,10 @@
 # Changelog
 
+## 4.0.3 - 2024-11-21
+
+### Fixed
+- Fix an error on Postgres installs.
+
 ## 4.0.2 - 2024-11-20
 
 ### Added

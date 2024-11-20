@@ -2,7 +2,7 @@
     "name": "verbb/back-in-stock",
     "description": "Subscribe to out of stock products to receive an email when back in stock.",
     "type": "craft-plugin",
-    "version": "4.0.2",
+    "version": "4.0.3",
     "keywords": [
         "craft",
         "cms",
