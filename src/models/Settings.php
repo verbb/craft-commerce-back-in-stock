@@ -2,6 +2,7 @@
 namespace verbb\backinstock\models;
 
 use craft\base\Model;
+use craft\helpers\App;
 
 class Settings extends Model
 {
@@ -16,4 +17,25 @@ class Settings extends Model
     public string $emailTemplate = 'craft-commerce-back-in-stock/emails/notification';
     public string $emailSubject = 'Order today, {{ variant.title }} is now in stock';
     public bool $purgeRequests = false;
+    public ?string $fromEmail = null;
+    public ?string $fromName = null;
+
+
+    // Public Methods
+    // =========================================================================
+
+    public function getFromEmail(): ?string
+    {
+        $settings = Craft::$app->getProjectConfig()->get('email');
+
+        return App::parseEnv($this->fromEmail) ?? App::parseEnv($settings['fromEmail'];
+    }
+
+    public function getFromName(): ?string
+    {
+        $settings = Craft::$app->getProjectConfig()->get('email');
+
+        return App::parseEnv($this->fromName) ?? App::parseEnv($settings['fromName'];
+    }
+
 }
