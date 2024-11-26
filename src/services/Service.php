@@ -47,7 +47,7 @@ class Service extends Component
         ])->all();
 
         if ($logs) {
-            $template = BackInStock::$plugin->getSettings()->emailTemplate;
+            $template = BackInStock::$plugin->getSettings()->getEmailTemplate();
             $subject = BackInStock::$plugin->getSettings()->emailSubject;
 
             // Add all emails to send to the queue

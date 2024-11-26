@@ -56,7 +56,7 @@ class BaseController extends Controller
         }
 
         // Check settings to see if confirmation is required
-        $template = BackInStock::$plugin->getSettings()->confirmationEmailTemplate;
+        $template = BackInStock::$plugin->getSettings()->getConfirmationEmailTemplate();
         $subject = BackInStock::$plugin->getSettings()->confirmationEmailSubject;
         $sendConfirmation = BackInStock::$plugin->getSettings()->sendConfirmation;
 
