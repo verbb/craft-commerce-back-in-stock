@@ -20,7 +20,6 @@ class Log extends Model
     // =========================================================================
 
     public ?string $id = null;
-    public ?string $email = null;
     public ?int $variantId = null;
     public ?string $locale = null;
     public array $options = [];
@@ -28,6 +27,8 @@ class Log extends Model
     public ?DateTime $dateCreated = null;
     public ?DateTime $dateUpdated = null;
     public ?string $uid = null;
+
+    private ?string $_email = null;
 
 
     // Public Methods
@@ -43,6 +44,16 @@ class Log extends Model
         $rules[] = [['variantId'], 'validateLog'];
 
         return $rules;
+    }
+
+    public function getEmail(): ?string
+    {
+        return $this->_email;
+    }
+
+    public function setEmail(?string $email): void
+    {
+        $this->_email = trim(strtolower($email));
     }
 
     public function getVariant(): ?Variant
@@ -72,7 +83,7 @@ class Log extends Model
         $duplicateRecord = LogRecord::findOne([
             'variantId' => $this->variantId,
             'locale' => $this->locale,
-            'email' => $this->email,
+            'email' => $this->getEmail(),
             'options' => Json::encode($this->options),
             'isNotified' => false,
         ]);

@@ -59,7 +59,7 @@ class Logs extends Component
         }
 
         $logRecord = $this->_getLogRecordById($log->id);
-        $logRecord->email = $log->email;
+        $logRecord->email = $log->getEmail();
         $logRecord->variantId = $log->variantId;
         $logRecord->locale = $log->locale;
         $logRecord->options = $log->options;
