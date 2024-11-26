@@ -28,14 +28,14 @@ class Settings extends Model
     {
         $settings = Craft::$app->getProjectConfig()->get('email');
 
-        return App::parseEnv($this->fromEmail) ?? App::parseEnv($settings['fromEmail'];
+        return App::parseEnv($this->fromEmail) ?? App::parseEnv($settings['fromEmail']);
     }
 
     public function getFromName(): ?string
     {
         $settings = Craft::$app->getProjectConfig()->get('email');
 
-        return App::parseEnv($this->fromName) ?? App::parseEnv($settings['fromName'];
+        return App::parseEnv($this->fromName) ?? App::parseEnv($settings['fromName']);
     }
 
     public function getConfirmationEmailTemplate(): ?string
