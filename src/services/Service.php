@@ -47,7 +47,7 @@ class Service extends Component
         ])->all();
 
         if ($logs) {
-            $template = BackInStock::$plugin->getSettings()->emailTemplate;
+            $template = BackInStock::$plugin->getSettings()->getEmailTemplate();
             $subject = BackInStock::$plugin->getSettings()->emailSubject;
 
             // Add all emails to send to the queue
@@ -132,12 +132,11 @@ class Service extends Component
             return false;
         }
 
-        // Get from address from site settings
-        $settings = Craft::$app->projectConfig->get('email');
+        $settings = BackInStock::$plugin->getSettings();;
 
         // build the email
         $newEmail = new Message();
-        $newEmail->setFrom([App::parseEnv($settings['fromEmail']) => App::parseEnv($settings['fromName'])]);
+        $newEmail->setFrom([$settings->getFromEmail() => $settings->getFromName()]);
         $newEmail->setTo($log->email);
         $newEmail->setSubject($subject);
         $newEmail->setHtmlBody($view->renderTemplate($templatePath, $renderVariables));
