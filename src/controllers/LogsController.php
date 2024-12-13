@@ -47,7 +47,7 @@ class LogsController extends Controller
                 'products.typeId AS productTypeId',
             ])
             ->leftJoin('{{%commerce_variants}} variants', '[[logs.variantId]] = [[variants.id]]')
-            ->leftJoin('{{%commerce_products}} products', '[[variants.productId]] = [[products.id]]')
+            ->leftJoin('{{%commerce_products}} products', '[[variants.primaryOwnerId]] = [[products.id]]')
             ->orderBy(['id' => SORT_DESC]);
 
         if ($search) {
