@@ -1,5 +1,17 @@
 # Changelog
 
+## 4.0.4 - 2024-12-14
+
+### Added
+- Add “From Name” and “From Email” plugin settings.
+
+### Changed
+- Email template plugin settings now support aliases and .env variables.
+
+### Fixed
+- Fix an issue for case-sensitive email checks.
+- Fix an error when viewing logs.
+
 ## 4.0.3 - 2024-11-21
 
 ### Fixed
