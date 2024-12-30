@@ -42,6 +42,11 @@
 - Now requires Craft 5.0+.
 - Now requires Craft Commerce 5.0+.
 
+## 3.0.5 - 2024-12-31
+
+### Fixed
+- Fix an error related to plugin settings.
+
 ## 3.0.4 - 2024-12-14
 
 ### Added
