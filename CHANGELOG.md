@@ -1,5 +1,10 @@
 # Changelog
 
+## 4.0.5 - 2024-12-31
+
+### Fixed
+- Fix an error related to plugin settings.
+
 ## 4.0.4 - 2024-12-14
 
 ### Added
