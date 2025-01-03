@@ -19,6 +19,7 @@ use yii\web\NotFoundHttpException;
 use yii\web\Response;
 
 use craft\commerce\Plugin as Commerce;
+use craft\commerce\elements\Variant;
 
 class LogsController extends Controller
 {
@@ -77,25 +78,26 @@ class LogsController extends Controller
         $logs = $query->all();
 
         $tableData = [];
-        $productTypeMap = [];
+
+        // Get all the variants for each log here for efficiency
+        $variants = Variant::find()
+            ->id(array_unique(ArrayHelper::getColumn($logs, 'variantId')))
+            ->indexBy('id')
+            ->all();
 
         $dateFormat = Craft::$app->getFormattingLocale()->getDateTimeFormat('short', Locale::FORMAT_PHP);
 
-        foreach (Commerce::getInstance()->getProductTypes()->getAllProductTypes() as $productType) {
-            $productTypeMap[$productType->id] = [
-                'title' => $productType->name,
-                'cpEditUrl' => $productType->cpEditUrl,
-            ];
-        }
-
         foreach ($logs as $log) {
-            $productLink = $productTypeMap[$log['productTypeId']] ?? [];
+            $variant = $variants[$log['variantId']] ?? [];
             $dateCreated = $log['dateCreated'] ? DateTimeHelper::toDateTime($log['dateCreated']) : null;
 
             $tableData[] = [
                 'title' => $log['email'],
                 'email' => $log['email'],
-                'variantId' => $productLink,
+                'variantId' => $variant ? [
+                    'title' => $variant->title,
+                    'cpEditUrl' => $variant->cpEditUrl,
+                ] : [],
                 'locale' => $log['locale'],
                 'isNotified' => $log['isNotified'],
                 'dateCreated' => $dateCreated?->format($dateFormat) ?? null,
