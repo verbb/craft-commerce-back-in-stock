@@ -77,6 +77,25 @@
       "rFN" : 0,
       "uCM" : 0
     },
+    "\/docs\/feature-tour\/usage.md" : {
+      "cB" : 0,
+      "cS" : 0,
+      "eF" : 1,
+      "eL" : 1,
+      "ema" : 1,
+      "eSQ" : 1,
+      "ft" : 4096,
+      "hM" : 0,
+      "oA" : 1,
+      "oAP" : "\/docs\/feature-tour\/usage.html",
+      "oF" : 0,
+      "oFM" : 0,
+      "oS" : 0,
+      "pHT" : 0,
+      "pME" : 1,
+      "rFN" : 0,
+      "uCM" : 0
+    },
     "\/docs\/get-started\/configuration.md" : {
       "cB" : 0,
       "cS" : 0,
@@ -153,7 +172,7 @@
       "rFN" : 0,
       "uCM" : 0
     },
-    "\/docs\/template-guides\/available-variables.md" : {
+    "\/docs\/template-guides\/example-form.md" : {
       "cB" : 0,
       "cS" : 0,
       "eF" : 1,
@@ -163,7 +182,7 @@
       "ft" : 4096,
       "hM" : 0,
       "oA" : 1,
-      "oAP" : "\/docs\/template-guides\/available-variables.html",
+      "oAP" : "\/docs\/template-guides\/example-form.html",
       "oF" : 0,
       "oFM" : 0,
       "oS" : 0,
@@ -236,6 +255,12 @@
       "oAP" : "\/src\/controllers",
       "oF" : 0
     },
+    "\/src\/events" : {
+      "ft" : 65536,
+      "oA" : 1,
+      "oAP" : "\/src\/events",
+      "oF" : 0
+    },
     "\/src\/icon-mask.svg" : {
       "ft" : 2097152,
       "miP" : 0,
@@ -268,43 +293,19 @@
       "oAP" : "\/src\/models",
       "oF" : 0
     },
+    "\/src\/queue\/jobs\/SendEmailNotification.php" : {
+      "cB" : 0,
+      "ft" : 8192,
+      "hM" : 0,
+      "oA" : 2,
+      "oAP" : "\/src\/queue\/jobs\/SendEmailNotification.php",
+      "oF" : 0
+    },
     "\/src\/records" : {
       "ft" : 65536,
       "oA" : 1,
       "oAP" : "\/src\/records",
       "oF" : 0
-    },
-    "\/src\/resources\/dist" : {
-      "ft" : 65536,
-      "oA" : 1,
-      "oAP" : "\/src\/resources\/dist",
-      "oF" : 0
-    },
-    "\/src\/resources\/src\/js\/back-in-stock.js" : {
-      "bF" : 0,
-      "ft" : 64,
-      "ma" : 1,
-      "mi" : 1,
-      "oA" : 0,
-      "oAP" : "\/src\/resources\/dist\/js\/back-in-stock.js",
-      "oF" : 0,
-      "sC" : 0,
-      "tS" : 0
-    },
-    "\/src\/resources\/src\/scss\/back-in-stock.scss" : {
-      "aP" : 1,
-      "bl" : 0,
-      "co" : 0,
-      "dP" : 10,
-      "ec" : 1,
-      "ft" : 4,
-      "ma" : 0,
-      "oA" : 0,
-      "oAP" : "\/src\/resources\/dist\/css\/back-in-stock.css",
-      "oF" : 0,
-      "oS" : 3,
-      "pg" : 0,
-      "sct" : 0
     },
     "\/src\/services" : {
       "ft" : 65536,
@@ -318,12 +319,12 @@
       "oAP" : "\/src\/templates",
       "oF" : 0
     },
-    "\/src\/translations\/en\/back-in-stock.php" : {
+    "\/src\/translations\/en\/craft-commerce-back-in-stock.php" : {
       "cB" : 0,
       "ft" : 8192,
       "hM" : 0,
       "oA" : 2,
-      "oAP" : "\/src\/translations\/en\/back-in-stock.php",
+      "oAP" : "\/src\/translations\/en\/craft-commerce-back-in-stock.php",
       "oF" : 0
     },
     "\/src\/variables" : {

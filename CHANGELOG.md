@@ -47,6 +47,11 @@
 - Now requires Craft 5.0+.
 - Now requires Craft Commerce 5.0+.
 
+## 3.0.6 - 2025-02-03
+
+### Fixed
+- Fix log table “Product/Variant” using the Product Type cpEditUrl, instead of the individual Product/Variant cpEditUrl.
+
 ## 3.0.5 - 2024-12-31
 
 ### Fixed
