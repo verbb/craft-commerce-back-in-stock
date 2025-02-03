@@ -1,5 +1,10 @@
 # Changelog
 
+## 4.0.6 - 2025-02-03
+
+### Fixed
+- Fix log table “Product/Variant” using the Product Type cpEditUrl, instead of the individual Product/Variant cpEditUrl.
+
 ## 4.0.5 - 2024-12-31
 
 ### Fixed
